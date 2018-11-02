@@ -1,10 +1,10 @@
-var play = function(game) 
+var battle = function(game) 
 {
 	// Global state variables
 }
 
 
-play.prototype = {
+battle.prototype = {
 	preload: function() 
 	{
 		// preload
@@ -13,18 +13,15 @@ play.prototype = {
 	{
 		// create
 		style = { font: "65px Arial", fill: "#ffffff", align: "center" };
-		title = game.add.text(game.width / 2, 50, 'Play!', style);
+		title = game.add.text(game.width / 2, 50, 'Battle!', style);
 		title.anchor.setTo(0.5);
 
 		cat = game.add.sprite(game.width / 2, game.height / 2, 'cat');
 		cat.anchor.setTo(0.5);
-
-		battleKey = game.input.keyboard.addKey(Phaser.Keyboard.B);
+		cat.scale.setTo(0.25);
 	},
 	update: function() 
 	{
 		// update
-		if(battleKey.justPressed())
-			game.state.start('battle');
 	},
 };

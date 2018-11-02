@@ -7,6 +7,7 @@ window.onload = function()
 	// add states
 	game.state.add('Load', Load);
 	game.state.add('play', play);
+	game.state.add('battle', battle);
 	game.state.start('Load');
 }
 
