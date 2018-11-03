@@ -17,12 +17,7 @@ move.prototype = {
 		player = new Player();
 
         // target cat
-        cat = game.add.sprite(game.width / 3, game.height / 3, 'cat');
-		cat.anchor.setTo(0.5);
-		// set cat size to 10%
-		cat.scale.setTo(0.1);
-        game.physics.enable(cat, Phaser.Physics.ARCADE);
-        //cat.body.onCollide.add(catIsCaught, this);
+        cat = new Cat();
 
     },
 	update: function() 
@@ -40,11 +35,10 @@ move.prototype = {
         {
             catFlees(cat, player);
         }
-        else
-        {
-            cat.body.velocity.x /=1.1;
-            cat.body.velocity.y /=1.1;
-        }
+        if(player.x < 0 || player.x > game.width || player.y < 0 || player.y > game.height){
+	   game.state.restart();
+	}
+
     },
 };
 
@@ -54,6 +48,6 @@ function catIsCaught (cat, player){
 }
 
 function catFlees (cat, player) {
-    cat.body.velocity.x = 4 * player.body.velocity.x;
-    cat.body.velocity.y = 4 * player.body.velocity.y;
+     cat.body.velocity.x = 4 * player.body.velocity.x;
+     cat.body.velocity.y = 4 * player.body.velocity.y;
 }
