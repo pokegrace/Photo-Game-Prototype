@@ -13,11 +13,21 @@ move.prototype = {
 	{
 		// create
 
+        // player character
 		photographer = game.add.sprite(game.width / 2, game.height / 2, 'cat');
 		photographer.anchor.setTo(0.5);
-		// set cat size to 25%
+		// set photographer  size to 25%
 		photographer.scale.setTo(0.25);
         game.physics.enable(photographer, Phaser.Physics.ARCADE);
+
+
+        // target cat
+        cat = game.add.sprite(game.width / 3, game.height / 3, 'cat');
+		cat.anchor.setTo(0.5);
+		// set cat size to 10%
+		cat.scale.setTo(0.1);
+        game.physics.enable(cat, Phaser.Physics.ARCADE);
+        //cat.body.onCollide.add(catIsCaught, this);
 
     },
 	update: function() 
@@ -28,6 +38,11 @@ move.prototype = {
         var accelleration = (crawling) ? 5 : 10;
         var topSpeed = (crawling) ? 40 : 80;
 
+        //tint the character darker if sneaking
+        if (crawling)
+            photographer.tint = 0x222222;
+        else
+            photographer.tint = 0xFFFFFF;
 
         // vertical movement
         var arrows = game.input.keyboard.createCursorKeys();
@@ -66,5 +81,14 @@ move.prototype = {
 	    photographer.body.velocity.clampX(-topSpeed, topSpeed);
 	    photographer.body.velocity.clampY(-topSpeed, topSpeed);
 
+        if (this.physics.arcade.collide(cat, photographer))
+        {
+        catIsCaught(cat, photographer);
+        }
     },
 };
+
+function catIsCaught (cat, photographer){
+    console.log(cat, photographer);
+    game.state.start('battle');
+}
