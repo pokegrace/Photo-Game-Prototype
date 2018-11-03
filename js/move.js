@@ -31,7 +31,19 @@ move.prototype = {
 
         if (this.physics.arcade.collide(cat, player))
         {
-        catIsCaught(cat, player);
+            catIsCaught(cat, player);
+        }
+
+
+        if (Phaser.Math.distance(cat.x, cat.y, player.x, player.y) < 100 &&
+            !player.crawling)
+        {
+            catFlees(cat, player);
+        }
+        else
+        {
+            cat.body.velocity.x /=1.1;
+            cat.body.velocity.y /=1.1;
         }
     },
 };
@@ -39,4 +51,9 @@ move.prototype = {
 function catIsCaught (cat, player){
     console.log(cat, player);
     game.state.start('battle');
+}
+
+function catFlees (cat, player) {
+    cat.body.velocity.x = 4 * player.body.velocity.x;
+    cat.body.velocity.y = 4 * player.body.velocity.y;
 }

@@ -5,6 +5,8 @@ function Player(){
     game.physics.enable(this, Phaser.Physics.ARCADE)
     
     game.add.existing(this);
+
+    this.crawling = false;
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -14,12 +16,12 @@ Player.prototype.constructor = Player;
 Player.prototype.update = function(){
         // check if the player is sneaking
         var control = game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
-        var crawling = control.isDown;
-        var accelleration = (crawling) ? 5 : 10;
-        var topSpeed = (crawling) ? 40 : 80;
+        this.crawling = control.isDown;
+        var accelleration = (this.crawling) ? 5 : 10;
+        var topSpeed = (this.crawling) ? 40 : 80;
         
         //tint the character darker if sneaking
-        if (crawling)
+        if (this.crawling)
             player.tint = 0x222222;
         else
             player.tint = 0xFFFFFF;
