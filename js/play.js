@@ -12,22 +12,27 @@ play.prototype = {
 	create: function() 
 	{
 		// create
-		style = { font: "65px Arial", fill: "#ffffff", align: "center" };
+		style = { font: "55px Arial", fill: "#ffffff", align: "center" };
 		title = game.add.text(game.width / 2, 50, 'Play!', style);
 		title.anchor.setTo(0.5);
 		
-		text = game.add.text(game.width / 2, 550, 'Press B to battle!', style);
+		text = game.add.text(game.width / 4, 550, 'Press B to battle!', style);
+		text.anchor.setTo(0.5);
+
+        text = game.add.text(game.width*3 / 4, 550, 'Press M to move!', style);
 		text.anchor.setTo(0.5);
 
 		cat = game.add.sprite(game.width / 2, game.height / 2, 'cat');
 		cat.anchor.setTo(0.5);
 
 		battleKey = game.input.keyboard.addKey(Phaser.Keyboard.B);
+		moveKey = game.input.keyboard.addKey(Phaser.Keyboard.M);
 	},
 	update: function() 
 	{
-		// update
 		if(battleKey.justPressed())
 			game.state.start('battle');
+		if(moveKey.justPressed())
+			game.state.start('move');
 	},
 };
