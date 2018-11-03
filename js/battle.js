@@ -18,6 +18,7 @@ battle.prototype = {
 
 		cat = game.add.sprite(game.width / 2, game.height / 2, 'cat');
 		cat.anchor.setTo(0.5);
+		// set cat size to 25%
 		cat.scale.setTo(0.25);
 	},
 	update: function() 
