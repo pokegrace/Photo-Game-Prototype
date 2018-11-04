@@ -86,24 +86,16 @@ battle.prototype = {
 		// APPROACH
 		if(arrow.x == approachText.x && ENTERkey.justPressed())
 		{
-			// changing stats
-			actionText.setText('You approached the cat.');
-			distance -= 25;
-			distanceText.setText('Distance: ' + distance + ' ft. away');
-			catScale += 0.25;
-			cat.scale.setTo(catScale);
 			console.log(cat.approachSuccess);
-
-			// cap distance
-			if(distance <= 0)
-			{
-				distanceText.setText('Distance: 0 ft. away');
-				catScale = 1;
-				cat.scale.setTo(catScale);
-			}
 
 			if(cat.approachSuccess)
 			{
+				// changing stats
+				actionText.setText('You approached the cat.');
+				distance -= 25;
+				distanceText.setText('Distance: ' + distance + ' ft. away');
+				catScale += 0.25;
+				cat.scale.setTo(catScale);
 				// change happiness
 				if(cat.happiness == 100)
 					cat.happiness -= randomRate(5, 25);
@@ -137,24 +129,38 @@ battle.prototype = {
 				actionText.setText('Approach failed. Your cat ran away.');
 			}
 
-			
+			// cap distance
+			if(distance <= 0)
+			{
+				actionText.setText('You cannot get any closer.');
+				distanceText.setText('Distance: 0 ft. away');
+				catScale = 1;
+				cat.scale.setTo(catScale);
+			}			
 		}
 		// GIVE TREAT
 		if(arrow.x == treatText.x && ENTERkey.justPressed())
 		{
-			// changing stats
-			actionText.setText('You gave the cat a treat.');
-			distance -= 25;
-			distanceText.setText('Distance: ' + distance + ' ft. away');
-			catScale += 0.25;
-			cat.scale.setTo(catScale);
-			cat.happiness += 10;
-			happinessText.setText('Happiness: ' + cat.happiness);
+			if(cat.treatSuccess)
+			{
+				// changing stats
+				actionText.setText('You gave the cat a treat.');
+				distance -= 25;
+				distanceText.setText('Distance: ' + distance + ' ft. away');
+				catScale += 0.25;
+				cat.scale.setTo(catScale);
+
+				// change happiness
+				cat.happiness += randomRate(10, 25);
+				happinessText.setText('Happiness: ' + cat.happiness);
+			}
+			else if(!cat.treatSuccess)
+				actionText.setText('You failed to give the cat a treat.');
 
 			// cap distance and happiness
 			if(distance <= 0)
 			{
-				actionText.setText('You gave it a treat! You cannot get any closer.');
+				actionText.setText('You cannot get any closer.');
 				distanceText.setText('Distance: 0 ft. away');
 				catScale = 1;
 				cat.scale.setTo(catScale);

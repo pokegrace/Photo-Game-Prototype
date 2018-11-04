@@ -7,8 +7,10 @@ function Cat(rhappiness){
 
     this.happiness = rhappiness;
     this.approachSuccess = true;
+    this.treatSuccess = true;
     // randomRate function in battle.js
-    rand = randomRate(0, 101);	// for calculating success %
+    randApproach = randomRate(0, 101);	// for calculating success % of approach
+    randTreat = randomRate(0, 101); // for calculating success % of treat
     console.log(rand);
 
     game.add.existing(this);
@@ -23,63 +25,63 @@ Cat.prototype.update = function(){
     	this.approachSuccess = true;
 	else if(this.happiness >= 90 && this.happiness < 100)
 	{
-		if(rand == 1)
+		if(randApproach == 1)
 			this.approachSuccess = false;
 		else
 			this.approachSuccess = true;
 	}
 	else if(this.happiness >= 80 && this.happiness < 90)
 	{
-		if(rand <= 12)
+		if(randApproach <= 12)
 			this.approachSuccess = false;
 		else
 			this.approachSuccess = true;
 	}
 	else if(this.happiness >= 70 && this.happiness < 80)
 	{
-		if(rand <= 23)
+		if(randApproach <= 23)
 			this.approachSuccess = false;
 		else
 			this.approachSuccess = true;
 	}
 	else if(this.happiness >= 60 && this.happiness < 70)
 	{
-		if(rand <= 34)
+		if(randApproach <= 34)
 			this.approachSuccess = false;
 		else
 			this.approachSuccess = true;
 	}
 	else if(this.happiness >= 50 && this.happiness < 60)
 	{
-		if(rand <= 45)
+		if(randApproach <= 45)
 			this.approachSuccess = false;
 		else
 			this.approachSuccess = true;
 	}
 	else if(this.happiness >= 40 && this.happiness < 50)
 	{
-		if(rand <= 56)
+		if(randApproach <= 56)
 			this.approachSuccess = false;
 		else
 			this.approachSuccess = true;
 	}
 	else if(this.happiness >= 30 && this.happiness < 40)
 	{
-		if(rand <= 67)
+		if(randApproach <= 67)
 			this.approachSuccess = false;
 		else
 			this.approachSuccess = true;
 	}
 	else if(this.happiness >= 20 && this.happiness < 30)
 	{
-		if(rand <= 78)
+		if(randApproach <= 78)
 			this.approachSuccess = false;
 		else
 			this.approachSuccess = true;
 	}
 	else if(this.happiness >= 10 && this.happiness < 20)
 	{
-		if(rand <= 89)
+		if(randApproach <= 89)
 			this.approachSuccess = false;
 		else
 			this.approachSuccess = true;
@@ -88,5 +90,32 @@ Cat.prototype.update = function(){
 		this.approachSuccess = false;
 
 	// calculating treat success rate
-
+	if(this.happiness >= 75 && this.happiness <= 100)
+	{
+		if(randTreat <= 10)
+			this.treatSuccess = false;
+		else
+			this.treatSuccess = true;
+	}
+	else if(this.happiness >= 50 && this.happiness < 75)
+	{
+		if(randTreat <= 25)
+			this.treatSuccess = false;
+		else
+			this.treatSuccess = true;
+	}
+	else if(this.happiness >= 25 && this.happiness < 50)
+	{
+		if(randTreat <= 50)
+			this.treatSuccess = false;
+		else
+			this.treatSuccess = true;
+	}
+	else if(this.happiness > 0 && this.happiness < 25)
+	{
+		if(randTreat <= 75)
+			this.treatSuccess = false;
+		else
+			this.treatSuccess = true;
+	}
 }
