@@ -30,7 +30,7 @@ battle.prototype = {
 
 		// creating action text to describe to player
 		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
-		actionText = game.add.text(game.width / 2, 100, 'Use W and D to move cursor.', style2);
+		actionText = game.add.text(game.width / 2, 100, 'Use left and right arrow keys to move cursor.', style2);
 		actionText.anchor.setTo(0.5);
 
 		distanceText = game.add.text(850, 25, 'Distance: 75 ft. away', style2);
@@ -57,8 +57,8 @@ battle.prototype = {
 
 		// adding keys to control actions
 		ENTERkey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-		leftkey = game.input.keyboard.addKey(Phaser.Keyboard.A);
-		rightkey = game.input.keyboard.addKey(Phaser.Keyboard.D);
+		leftkey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+		rightkey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 	},
 	update: function() 
 	{
@@ -76,14 +76,17 @@ battle.prototype = {
 		else if(arrow.x == treatText.x && leftkey.justPressed())
 			arrow.x = approachText.x;
 
-		// if an option is selected, do something
+		// APPROACH
 		if(arrow.x == approachText.x && ENTERkey.justPressed())
 		{
+			// changing stats
 			actionText.setText('You approached the cat.');
 			distance -= 25;
 			distanceText.setText('Distance: ' + distance + ' ft. away');
 			catScale += 0.25;
 			cat.scale.setTo(catScale);
+
+			// cap distance
 			if(distance <= 0)
 			{
 				actionText.setText('You cannot get any closer.');
@@ -92,12 +95,33 @@ battle.prototype = {
 				cat.scale.setTo(catScale);
 			}
 		}
+		// GIVE TREAT
 		if(arrow.x == treatText.x && ENTERkey.justPressed())
 		{
+			// changing stats
 			actionText.setText('You gave the cat a treat.');
+			distance -= 25;
+			distanceText.setText('Distance: ' + distance + ' ft. away');
+			catScale += 0.25;
+			cat.scale.setTo(catScale);
 			happiness += 10;
 			happinessText.setText('Happiness: ' + happiness);
+
+			// cap distance and happiness
+			if(distance <= 0)
+			{
+				actionText.setText('You cannot get any closer.');
+				distanceText.setText('Distance: 0 ft. away');
+				catScale = 1;
+				cat.scale.setTo(catScale);
+			}
+			if(happiness >= 100)
+			{
+				happiness = 100;
+				happinessText.setText('Happiness: ' + happiness);
+			}
 		}
+		// TAKE PHOTO
 		if(arrow.x == photoText.x && ENTERkey.justPressed())
 		{
 			actionText.setText('You took a photo of the cat.');
