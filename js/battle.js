@@ -7,8 +7,8 @@ var battle = function(game)
 var arrow;
 var cat, catScale;
 var actionText, approachText, treatText, photoText;
-var distance = 75, distanceText;
-var happiness = 50, happinessText;
+var distance, distanceText;
+var happiness, happinessText;
 
 battle.prototype = {
 	preload: function() 
@@ -18,6 +18,9 @@ battle.prototype = {
 	create: function() 
 	{
 		// create
+		distance = 75;
+		happiness = 50;
+
 		style1 = {font: "65px Arial", fill: "#ffffff", align: "center"};
 		title = game.add.text(game.width / 2, 50, 'Battle!', style1);
 		title.anchor.setTo(0.5);
