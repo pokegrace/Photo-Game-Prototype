@@ -26,7 +26,8 @@ battle.prototype = {
 		title.anchor.setTo(0.5);
 
 		// randomly assign a happiness to cat from (70 - 100)
-		rhappiness = Math.floor(Math.random() * (100 - 70) + 70);
+		rhappiness = randomRate(7, 11);
+		rhappiness *= 10;	
 
 		// adding cat object 
 		cat = new Cat(rhappiness);
@@ -91,15 +92,52 @@ battle.prototype = {
 			distanceText.setText('Distance: ' + distance + ' ft. away');
 			catScale += 0.25;
 			cat.scale.setTo(catScale);
+			console.log(cat.approachSuccess);
 
 			// cap distance
 			if(distance <= 0)
 			{
-				actionText.setText('You cannot get any closer.');
 				distanceText.setText('Distance: 0 ft. away');
 				catScale = 1;
 				cat.scale.setTo(catScale);
 			}
+
+			if(cat.approachSuccess)
+			{
+				// change happiness
+				if(cat.happiness == 100)
+					cat.happiness -= randomRate(5, 25);
+				else if(cat.happiness >= 90 && cat.happiness < 100)
+					cat.happiness -= randomRate(6, 25);
+				else if(cat.happiness >= 80 && cat.happiness < 90)
+					cat.happiness -= randomRate(7, 30);
+				else if(cat.happiness >= 70 && cat.happiness < 80)
+					cat.happiness -= randomRate(8, 30);
+				else if(cat.happiness >= 60 && cat.happiness < 70)
+					cat.happiness -= randomRate(10, 35);
+				else if(cat.happiness >= 50 && cat.happiness < 60)
+					cat.happiness -= randomRate(12, 35);
+				else if(cat.happiness >= 40 && cat.happiness < 50)
+					cat.happiness -= randomRate(14, 40);
+				else if(cat.happiness >= 30 && cat.happiness < 40)
+					cat.happiness -= randomRate(15, 39);
+				else if(cat.happiness >= 20 && cat.happiness < 30)
+					cat.happiness -= randomRate(15, 29);
+				else if(cat.happiness >= 10 && cat.happiness < 20)
+					cat.happiness -= randomRate(10, 19);
+				else if(cat.happiness > 0 && cat.happiness < 10)
+					cat.happiness -= randomRate(1, 9);
+				else if(cat.happiness <= 0)
+					actionText.setText('Your cat ran away.');
+				happinessText.setText('Happiness: ' + cat.happiness);
+			}
+			else if(!cat.approachSuccess)
+			{
+				happinessText.setText('Happiness: ' + cat.happiness);
+				actionText.setText('Approach failed. Your cat ran away.');
+			}
+
+			
 		}
 		// GIVE TREAT
 		if(arrow.x == treatText.x && ENTERkey.justPressed())
@@ -135,3 +173,9 @@ battle.prototype = {
 		}
 	},
 };
+
+function randomRate(min, max)
+{
+	rand = Math.floor(Math.random() * (max - min) + min);
+	return rand;
+}
