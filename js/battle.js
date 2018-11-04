@@ -25,9 +25,13 @@ battle.prototype = {
 		title = game.add.text(game.width / 2, 50, 'Battle!', style1);
 		title.anchor.setTo(0.5);
 
+		// randomly assign a happiness to cat from (70 - 100)
+		rhappiness = Math.floor(Math.random() * (100 - 70) + 70);
+
 		// adding cat object 
-		cat = new Cat();
+		cat = new Cat(rhappiness);
 		game.add.existing(cat);
+		// scaling cat for distance
 		catScale = 0.25;
 
 		// creating action text to describe to player
@@ -38,7 +42,7 @@ battle.prototype = {
 		distanceText = game.add.text(850, 25, 'Distance: 75 ft. away', style2);
 		distanceText.anchor.setTo(0.5);
 
-		happinessText = game.add.text(100, 25, 'Happiness: 50', style2);
+		happinessText = game.add.text(100, 25, 'Happiness: ' + cat.happiness, style2);
 		happinessText.anchor.setTo(0.5);
 
 		// adding text for possible actions
@@ -106,8 +110,8 @@ battle.prototype = {
 			distanceText.setText('Distance: ' + distance + ' ft. away');
 			catScale += 0.25;
 			cat.scale.setTo(catScale);
-			happiness += 10;
-			happinessText.setText('Happiness: ' + happiness);
+			cat.happiness += 10;
+			happinessText.setText('Happiness: ' + cat.happiness);
 
 			// cap distance and happiness
 			if(distance <= 0)
@@ -117,10 +121,10 @@ battle.prototype = {
 				catScale = 1;
 				cat.scale.setTo(catScale);
 			}
-			if(happiness >= 100)
+			if(cat.happiness >= 100)
 			{
-				happiness = 100;
-				happinessText.setText('Happiness: ' + happiness);
+				cat.happiness = 100;
+				happinessText.setText('Happiness: ' + cat.happiness);
 			}
 		}
 		// TAKE PHOTO

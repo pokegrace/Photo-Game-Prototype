@@ -1,9 +1,11 @@
-function Cat(){
+function Cat(rhappiness){
     Phaser.Sprite.call( this, game, game.width / 2, game.height / 2, 'cat');
 
     this.anchor.setTo(0.5);
     this.scale.setTo(0.25);
     game.physics.enable(this, Phaser.Physics.ARCADE);
+
+    this.happiness = rhappiness;
     
     game.add.existing(this);
 }
