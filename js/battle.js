@@ -141,7 +141,7 @@ battle.prototype = {
 		// GIVE TREAT
 		if(arrow.x == treatText.x && ENTERkey.justPressed())
 		{
-			if(cat.treatSuccess)
+			if(cat.approachSuccess && cat.treatSuccess)
 			{
 				// changing stats
 				actionText.setText('You gave the cat a treat.');
@@ -154,7 +154,7 @@ battle.prototype = {
 				cat.happiness += randomRate(10, 25);
 				happinessText.setText('Happiness: ' + cat.happiness);
 			}
-			else if(!cat.treatSuccess)
+			else if(!cat.approachSuccess || !cat.treatSuccess)
 				actionText.setText('You failed to give the cat a treat.');
 
 			// cap distance and happiness

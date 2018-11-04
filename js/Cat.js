@@ -11,8 +11,9 @@ function Cat(rhappiness){
     // randomRate function in battle.js
     randApproach = randomRate(0, 101);	// for calculating success % of approach
     randTreat = randomRate(0, 101); // for calculating success % of treat
-    console.log(rand);
-
+    console.log(randApproach);
+    console.log(randTreat);
+    
     game.add.existing(this);
 }
 
