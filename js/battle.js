@@ -25,11 +25,10 @@ battle.prototype = {
 		title = game.add.text(game.width / 2, 50, 'Battle!', style1);
 		title.anchor.setTo(0.5);
 
-		cat = game.add.sprite(game.width / 2, game.height / 2, 'cat');
-		cat.anchor.setTo(0.5);
-		// set cat size to 25%
+		// adding cat object 
+		cat = new Cat();
+		game.add.existing(cat);
 		catScale = 0.25;
-		cat.scale.setTo(catScale);
 
 		// creating action text to describe to player
 		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
@@ -113,7 +112,7 @@ battle.prototype = {
 			// cap distance and happiness
 			if(distance <= 0)
 			{
-				actionText.setText('You cannot get any closer.');
+				actionText.setText('You gave it a treat! You cannot get any closer.');
 				distanceText.setText('Distance: 0 ft. away');
 				catScale = 1;
 				cat.scale.setTo(catScale);
