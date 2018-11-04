@@ -19,6 +19,7 @@ Load.prototype = {
 		// loading assets
 		game.load.path = './assets/placeholders/';
 		game.load.image('cat', 'cat.png');
+		game.load.image('arrow', 'arrow.png');
 	},
 	create: function()
 	{
