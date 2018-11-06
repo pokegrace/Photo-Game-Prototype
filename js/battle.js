@@ -86,9 +86,13 @@ battle.prototype = {
 		// APPROACH
 		if(arrow.x == approachText.x && ENTERkey.justPressed())
 		{
-			console.log(cat.approachSuccess);
+			// comparing roll to cat.successRate
+			var roll = randomRate(1, 101);
+			console.log('approach roll: ' + roll);
+			console.log('cat success rate: ' + cat.approachSuccessRate);
 
-			if(cat.approachSuccess)
+			// if cat.successRate > roll, then success!
+			if(cat.approachSuccessRate > roll)
 			{
 				// changing stats
 				actionText.setText('You approached the cat.');
@@ -96,6 +100,7 @@ battle.prototype = {
 				distanceText.setText('Distance: ' + distance + ' ft. away');
 				catScale += 0.25;
 				cat.scale.setTo(catScale);
+
 				// change happiness
 				if(cat.happiness == 100)
 					cat.happiness -= randomRate(5, 25);
@@ -123,10 +128,11 @@ battle.prototype = {
 					actionText.setText('Your cat ran away.');
 				happinessText.setText('Happiness: ' + cat.happiness);
 			}
-			else if(!cat.approachSuccess)
+			else
 			{
 				happinessText.setText('Happiness: ' + cat.happiness);
 				actionText.setText('Approach failed. Your cat ran away.');
+				game.state.start('play');
 			}
 
 			// cap distance
@@ -141,7 +147,11 @@ battle.prototype = {
 		// GIVE TREAT
 		if(arrow.x == treatText.x && ENTERkey.justPressed())
 		{
-			if(cat.approachSuccess && cat.treatSuccess)
+			var roll = randomRate(1, 101);
+			console.log('treat roll: ' + roll);
+			console.log('cat success rate: ' + cat.treatSuccessRate);
+
+			if(cat.treatSuccessRate > roll)
 			{
 				// changing stats
 				actionText.setText('You gave the cat a treat.');
@@ -154,13 +164,12 @@ battle.prototype = {
 				cat.happiness += randomRate(10, 25);
 				happinessText.setText('Happiness: ' + cat.happiness);
 			}
-			else if(!cat.approachSuccess || !cat.treatSuccess)
+			else
 				actionText.setText('You failed to give the cat a treat.');
 
 			// cap distance and happiness
 			if(distance <= 0)
 			{
-				actionText.setText('You cannot get any closer.');
 				distanceText.setText('Distance: 0 ft. away');
 				catScale = 1;
 				cat.scale.setTo(catScale);
