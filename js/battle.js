@@ -7,7 +7,7 @@ var battle = function(game)
 var arrow;
 var cat, catScale;
 var actionText, approachText, treatText, photoText;
-var distance, distanceText;
+var distanceText;
 var happiness, happinessText;
 
 battle.prototype = {

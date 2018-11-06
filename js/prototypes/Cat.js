@@ -6,7 +6,7 @@ function Cat(rhappiness){
     game.physics.enable(this, Phaser.Physics.ARCADE);
 
     this.happiness = rhappiness;
-    this.approachSuccessRate;
+    this.approachSuccessRate; 
     this.treatSuccessRate;
     
     game.add.existing(this);
