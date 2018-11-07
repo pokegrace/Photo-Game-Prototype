@@ -18,7 +18,7 @@ battle.prototype = {
 	create: function() 
 	{
 		// create
-		distance = 75;
+		distance = game.catDistance;
 		happiness = 50;
 
 		style1 = {font: "65px Arial", fill: "#ffffff", align: "center"};
@@ -40,7 +40,9 @@ battle.prototype = {
 		actionText = game.add.text(game.width / 2, 100, 'Use left and right arrow keys to move cursor.', style2);
 		actionText.anchor.setTo(0.5);
 
+
 		distanceText = game.add.text(850, 25, 'Distance: 75 ft. away', style2);
+        distanceText.setText('Distance: ' + distance + ' ft. away');
 		distanceText.anchor.setTo(0.5);
 
 		happinessText = game.add.text(100, 25, 'Happiness: ' + cat.happiness, style2);

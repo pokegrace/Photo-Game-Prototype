@@ -1,122 +1,96 @@
-function Cat(rhappiness){
+function OverWorldCat(){
     Phaser.Sprite.call( this, game, game.width * 3 /4 , game.height / 2, 'cat');
 
     this.anchor.setTo(0.5);
     this.scale.setTo(0.25);
     game.physics.enable(this, Phaser.Physics.ARCADE);
 
-    this.happiness = rhappiness;
-    this.approachSuccess = true;
-    this.treatSuccess = true;
-    // randomRate function in battle.js
-    randApproach = randomRate(0, 101);	// for calculating success % of approach
-    randTreat = randomRate(0, 101); // for calculating success % of treat
-    console.log(randApproach);
-    console.log(randTreat);
-    
+
+    this.coneRange = 200;
+    this.detectionDot = game.add.graphics(0, 0);
+    this.lastRotation = this.rotation - 1;
+    this.lastBody = {x:0, y:0};
+
     game.add.existing(this);
 }
 
-Cat.prototype = Object.create(Phaser.Sprite.prototype);
-Cat.prototype.constructor = Cat;
+OverWorldCat.prototype = Object.create(Phaser.Sprite.prototype);
+OverWorldCat.prototype.constructor = OverWorldCat;
 
-Cat.prototype.update = function(){
-	// calculating approach success rate
-    if(this.happiness == 100)
-    	this.approachSuccess = true;
-	else if(this.happiness >= 90 && this.happiness < 100)
-	{
-		if(randApproach == 1)
-			this.approachSuccess = false;
-		else
-			this.approachSuccess = true;
-	}
-	else if(this.happiness >= 80 && this.happiness < 90)
-	{
-		if(randApproach <= 12)
-			this.approachSuccess = false;
-		else
-			this.approachSuccess = true;
-	}
-	else if(this.happiness >= 70 && this.happiness < 80)
-	{
-		if(randApproach <= 23)
-			this.approachSuccess = false;
-		else
-			this.approachSuccess = true;
-	}
-	else if(this.happiness >= 60 && this.happiness < 70)
-	{
-		if(randApproach <= 34)
-			this.approachSuccess = false;
-		else
-			this.approachSuccess = true;
-	}
-	else if(this.happiness >= 50 && this.happiness < 60)
-	{
-		if(randApproach <= 45)
-			this.approachSuccess = false;
-		else
-			this.approachSuccess = true;
-	}
-	else if(this.happiness >= 40 && this.happiness < 50)
-	{
-		if(randApproach <= 56)
-			this.approachSuccess = false;
-		else
-			this.approachSuccess = true;
-	}
-	else if(this.happiness >= 30 && this.happiness < 40)
-	{
-		if(randApproach <= 67)
-			this.approachSuccess = false;
-		else
-			this.approachSuccess = true;
-	}
-	else if(this.happiness >= 20 && this.happiness < 30)
-	{
-		if(randApproach <= 78)
-			this.approachSuccess = false;
-		else
-			this.approachSuccess = true;
-	}
-	else if(this.happiness >= 10 && this.happiness < 20)
-	{
-		if(randApproach <= 89)
-			this.approachSuccess = false;
-		else
-			this.approachSuccess = true;
-	}
-	else if(this.happiness > 0 && this.happiness < 10)
-		this.approachSuccess = false;
+OverWorldCat.prototype.update = function(){
+    // spin the cat
+    this.rotation = this.rotation + 0.01;
 
-	// calculating treat success rate
-	if(this.happiness >= 75 && this.happiness <= 100)
-	{
-		if(randTreat <= 10)
-			this.treatSuccess = false;
-		else
-			this.treatSuccess = true;
-	}
-	else if(this.happiness >= 50 && this.happiness < 75)
-	{
-		if(randTreat <= 25)
-			this.treatSuccess = false;
-		else
-			this.treatSuccess = true;
-	}
-	else if(this.happiness >= 25 && this.happiness < 50)
-	{
-		if(randTreat <= 50)
-			this.treatSuccess = false;
-		else
-			this.treatSuccess = true;
-	}
-	else if(this.happiness > 0 && this.happiness < 25)
-	{
-		if(randTreat <= 75)
-			this.treatSuccess = false;
-		else
-			this.treatSuccess = true;
-	}
+
+    if (this.rotation != this.lastRotation ||
+        this.lastBody.x != this.body.x ||
+        this.body.y != this.lastBody.y)
+    {
+        this.detectionDot.clear();
+        this.lastRotation = this.rotation;
+        this.lastBody.x = this.body.x;
+        this.lastBody.y = this.body.y;
+        this.last
+        var conePath = [this.x, this.y];
+        for (var i = this.rotation - 1; i <= this.rotation + 1; i += 0.1)
+        {
+            var x = this.x + this.coneRange * Math.cos(i);
+            var y = this.y + this.coneRange * Math.sin(i);
+            var ray = new Phaser.Line(this.x, this.y, x, y);
+
+            var point = this.drawConeAroundWalls(ray);
+
+            conePath.push(point.x);
+            conePath.push(point.y);
+        }
+            this.detectionDot.lineStyle(2, 0xffd900, 1);
+            this.detectionDot.beginFill(0x00FF00, .3);
+            this.detectionDot.drawPolygon(conePath);
+            this.detectionDot.endFill();
+            this.detectionDot.heigth = 0;
 }
+
+}
+
+
+// taking inspiration from the raycasting example here
+
+
+OverWorldCat.prototype.drawConeAroundWalls = function(ray) {
+    var distanceToWall = Number.POSITIVE_INFINITY;
+    var closestIntersection = null;
+    var point = {x:ray.end.x, y:ray.end.y};
+
+    if (game.playerIsSneaking)
+    {
+        // For each of the walls...
+        overWorldWalls.forEach(function(wall) {
+            // Create an array of lines that represent the four edges of each wall
+            var lines = [
+                new Phaser.Line(wall.x, wall.y, wall.x + wall.width, wall.y),
+                new Phaser.Line(wall.x, wall.y, wall.x, wall.y + wall.height),
+                new Phaser.Line(wall.x + wall.width, wall.y,
+                    wall.x + wall.width, wall.y + wall.height),
+                new Phaser.Line(wall.x, wall.y + wall.height,
+                    wall.x + wall.width, wall.y + wall.height)
+            ];
+
+            // Test each of the edges in this wall against the ray.
+            // If the ray intersects any of the edges then the wall must be in the way.
+            for(var i = 0; i < lines.length; i++) {
+                var intersect = Phaser.Line.intersects(ray, lines[i]);
+                if (intersect) {
+                    // Find the closest intersection
+                    distance =
+                        this.game.math.distance(ray.start.x, ray.start.y, intersect.x, intersect.y);
+                    if (distance < distanceToWall) {
+                        distanceToWall = distance;
+                        closestIntersection = intersect;
+                    }
+                }
+            }
+        }, this);
+    }
+    return (closestIntersection) ? closestIntersection: point;
+
+};

@@ -1,6 +1,9 @@
 var move = function(game) 
 {
 	// Global state variables
+
+    game.catDistance = 100;
+    game.playerIsSneaking = false;
 }
 
 
@@ -12,17 +15,34 @@ move.prototype = {
 	create: function() 
 	{
 		// create
+        // wall group
+        overWorldWalls = game.add.group();
+
+        var wall = game.add.sprite(game.world.width/2 + 50, game.world.height/2, 'obstacle', null, overWorldWalls);
+        wall.scale.x = 0.2;
+        wall.scale.y = 0.2;
+
+        var wall = game.add.sprite(game.world.width/2 + 120, game.world.height/2 + 40, 'obstacle', null, overWorldWalls);
+        wall.scale.x = 0.2;
+        wall.scale.y = 0.2;
+
+        var wall = game.add.sprite(game.world.width/2 + 160, game.world.height/2 + -80, 'obstacle', null, overWorldWalls);
+        wall.scale.x = 0.2;
+        wall.scale.y = 0.2;
 
         // player character
 		player = new Player();
 
         // target cat
-        cat = new Cat();
+        cat = new OverWorldCat();
+
+
+
 
     },
 	update: function() 
 	{
-
+        game.catDistance = Math.floor(Phaser.Math.distance(player.x, player.y, cat.x, cat.y) + 100);
 
         if (this.physics.arcade.collide(cat, player))
         {

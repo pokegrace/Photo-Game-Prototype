@@ -22,10 +22,15 @@ Player.prototype.update = function(){
         
         //tint the character darker if sneaking
         if (this.crawling)
+        {
+            game.playerIsSneaking = true;
             player.tint = 0x222222;
+        }
         else
+        {
+            game.playerIsSneaking = false;
             player.tint = 0xFFFFFF;
-
+        }
         // vertical movement
         var arrows = game.input.keyboard.createCursorKeys();
         if (arrows.up.isDown && arrows.down.isUp)

@@ -20,6 +20,7 @@ Load.prototype = {
 		game.load.path = './assets/placeholders/';
 		game.load.image('cat', 'cat.png');
 		game.load.image('arrow', 'arrow.png');
+		game.load.image('obstacle', 'obstacle.png');
 	},
 	create: function()
 	{
