@@ -18,7 +18,7 @@ battle.prototype = {
 	create: function() 
 	{
 		// create
-		distance = game.catDistance;
+		distance = (game.catDistance < 100) ? 100 : game.catDistance;
 		happiness = 50;
 
 		style1 = {font: "65px Arial", fill: "#ffffff", align: "center"};
