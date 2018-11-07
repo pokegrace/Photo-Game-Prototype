@@ -61,8 +61,35 @@ OverWorldCat.prototype.drawConeAroundWalls = function(ray) {
     var closestIntersection = null;
     var point = {x:ray.end.x, y:ray.end.y};
 
+    var distanceToPlayer = Number.POSITIVE_INFINITY;
+
+    // check distanct to player
+    var lines = [
+        new Phaser.Line(player.body.x+10, player.body.y+10, player.body.x-10 + player.width, player.y+10),
+        new Phaser.Line(player.body.x+10, player.body.y+10, player.body.x+10, player.body.y-10 + player.height),
+        new Phaser.Line(player.body.x-10 + player.width, player.body.y+10,
+            player.body.x-10 + player.width, player.body.y+10 + player.height),
+        new Phaser.Line(player.body.x+10, player.body.y-10 + player.height,
+            player.body.x-10 + player.width, player.body.y-10 + player.height)
+    ];
+
+    for(var i = 0; i < lines.length; i++) {
+        var intersect = Phaser.Line.intersects(ray, lines[i]);
+        if (intersect) {
+            // Find the closest intersection
+            distance =
+                this.game.math.distance(ray.start.x, ray.start.y, intersect.x, intersect.y);
+            if (distance < distanceToPlayer) {
+                distanceToPlayer = distance;
+                closestIntersection = intersect;
+            }
+        }
+    }
+
     if (game.playerIsSneaking)
     {
+
+
         // For each of the walls...
         overWorldWalls.forEach(function(wall) {
             // Create an array of lines that represent the four edges of each wall
@@ -90,6 +117,11 @@ OverWorldCat.prototype.drawConeAroundWalls = function(ray) {
                 }
             }
         }, this);
+    }
+    if (distanceToPlayer < distanceToWall)
+    {
+        console.log(cat, player);
+        game.state.start('battle');
     }
     return (closestIntersection) ? closestIntersection: point;
 

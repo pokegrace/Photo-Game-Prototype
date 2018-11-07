@@ -17,18 +17,23 @@ move.prototype = {
 		// create
         // wall group
         overWorldWalls = game.add.group();
+        overWorldWalls.enableBody = true;
+        game.physics.enable(overWorldWalls, Phaser.Physics.ARCADE);
 
         var wall = game.add.sprite(game.world.width/2 + 50, game.world.height/2, 'obstacle', null, overWorldWalls);
         wall.scale.x = 0.2;
         wall.scale.y = 0.2;
+        wall.body.immovable = true;
 
         var wall = game.add.sprite(game.world.width/2 + 120, game.world.height/2 + 40, 'obstacle', null, overWorldWalls);
         wall.scale.x = 0.2;
         wall.scale.y = 0.2;
+        wall.body.immovable = true;
 
         var wall = game.add.sprite(game.world.width/2 + 160, game.world.height/2 + -80, 'obstacle', null, overWorldWalls);
         wall.scale.x = 0.2;
         wall.scale.y = 0.2;
+        wall.body.immovable = true;
 
         // player character
 		player = new Player();
@@ -42,7 +47,10 @@ move.prototype = {
     },
 	update: function() 
 	{
-        game.catDistance = Math.floor(Phaser.Math.distance(player.x, player.y, cat.x, cat.y) + 100);
+        game.catDistance = Math.floor(Phaser.Math.distance(player.x, player.y, cat.x, cat.y));
+
+
+        game.physics.arcade.collide(player, overWorldWalls, function(){console.log("bump wall")}, null, this);
 
         if (this.physics.arcade.collide(cat, player))
         {
