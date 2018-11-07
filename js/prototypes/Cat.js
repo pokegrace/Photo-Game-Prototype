@@ -1,5 +1,5 @@
 function Cat(rhappiness){
-    Phaser.Sprite.call( this, game, game.width / 2, game.height / 2, 'cat');
+    Phaser.Sprite.call( this, game, game.width * 3 /4 , game.height / 2, 'cat');
 
     this.anchor.setTo(0.5);
     this.scale.setTo(0.25);
