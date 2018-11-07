@@ -19,6 +19,6 @@ $(document).ready(function()
 
 
 var generateComment = function () {
-    console.log(grammar.flatten("#origin#"));
+    return (grammar.flatten("#origin#"));
 
 }
