@@ -15,7 +15,7 @@ Player.prototype.constructor = Player;
 
 Player.prototype.update = function(){
         // check if the player is sneaking
-        var control = game.input.keyboard.addKey(Phaser.Keyboard.CONTROL);
+        var control = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
         this.crawling = control.isDown;
         var accelleration = (this.crawling) ? 5 : 10;
         var topSpeed = (this.crawling) ? 40 : 80;
