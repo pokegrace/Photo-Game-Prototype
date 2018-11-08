@@ -80,13 +80,7 @@ move.prototype = {
 	   game.state.restart();
 	}
 	
-	if (Phaser.Math.distance(cat.x, cat.y, player.x, player.y) < 150 &&
-            !player.crawling)
-        {
-            if(cat.rotation != game.physics.arcade.angleBetween(cat, player)){
-	      cat.rotation = cat.rotation + 0.01;
-	    }
-        }else{
+	
 	 cat.x = path[pi].x;
 	 cat.y = path[pi].y;
 	 cat.rotation = path[pi].angle;
@@ -95,7 +89,7 @@ move.prototype = {
             {
                 pi = 0;
             }
-	}
+	
     },
 };
 
