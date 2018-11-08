@@ -8,7 +8,7 @@ var arrow;
 var cat, catScale;
 var actionText, catText, turnText;
 var approachText, treatText, photoText;
-var distanceText, happinessText;
+var distanceText, moodText;
 var playerTurn;
 
 battle.prototype = {
@@ -26,12 +26,12 @@ battle.prototype = {
 		title = game.add.text(game.width / 2, 50, 'Battle!', style1);
 		title.anchor.setTo(0.5);
 
-		// randomly assign a happiness to cat from (70 - 100)
-		rhappiness = randomRate(7, 11);
-		rhappiness *= 10;	
+		// randomly assign a mood to cat from (70 - 100)
+		rmood = randomRate(7, 11);
+		rmood *= 10;	
 
 		// adding cat object 
-		cat = new Cat(rhappiness);
+		cat = new Cat(rmood);
 		game.add.existing(cat);
 		// scaling cat for distance
 		catScale = 0.25;
@@ -48,8 +48,8 @@ battle.prototype = {
 		distanceText = game.add.text(850, 25, 'Distance: 75 ft. away', style2);
 		distanceText.anchor.setTo(0.5);
 
-		happinessText = game.add.text(100, 25, 'Happiness: ' + cat.happiness, style2);
-		happinessText.anchor.setTo(0.5);
+		moodText = game.add.text(70, 25, 'Mood: ' + cat.mood, style2);
+		moodText.anchor.setTo(0.5);
 
 		// adding text for possible actions
 		textStyle = {font: '32px Arial', fill: '#ffffff', align: 'center'};
@@ -110,33 +110,33 @@ battle.prototype = {
 				console.log('approach roll: ' + roll);
 				console.log('cat success rate: ' + cat.approachSuccessRate);
 
-				// change happiness
-				if(cat.happiness == 100)
-					cat.happiness -= randomRate(5, 25);
-				else if(cat.happiness >= 90 && cat.happiness < 100)
-					cat.happiness -= randomRate(6, 25);
-				else if(cat.happiness >= 80 && cat.happiness < 90)
-					cat.happiness -= randomRate(7, 30);
-				else if(cat.happiness >= 70 && cat.happiness < 80)
-					cat.happiness -= randomRate(8, 30);
-				else if(cat.happiness >= 60 && cat.happiness < 70)
-					cat.happiness -= randomRate(10, 35);
-				else if(cat.happiness >= 50 && cat.happiness < 60)
-					cat.happiness -= randomRate(12, 35);
-				else if(cat.happiness >= 40 && cat.happiness < 50)
-					cat.happiness -= randomRate(14, 40);
-				else if(cat.happiness >= 30 && cat.happiness < 40)
-					cat.happiness -= randomRate(15, 39);
-				else if(cat.happiness >= 20 && cat.happiness < 30)
-					cat.happiness -= randomRate(15, 29);
-				else if(cat.happiness >= 10 && cat.happiness < 20)
-					cat.happiness -= randomRate(10, 19);
-				else if(cat.happiness > 0 && cat.happiness < 10)
-					cat.happiness -= randomRate(1, 9);
-				else if(cat.happiness <= 0)
-					cat.happiness = 0;
+				// change mood
+				if(cat.mood == 100)
+					cat.mood -= randomRate(5, 25);
+				else if(cat.mood >= 90 && cat.mood < 100)
+					cat.mood -= randomRate(6, 25);
+				else if(cat.mood >= 80 && cat.mood < 90)
+					cat.mood -= randomRate(7, 30);
+				else if(cat.mood >= 70 && cat.mood < 80)
+					cat.mood -= randomRate(8, 30);
+				else if(cat.mood >= 60 && cat.mood < 70)
+					cat.mood -= randomRate(10, 35);
+				else if(cat.mood >= 50 && cat.mood < 60)
+					cat.mood -= randomRate(12, 35);
+				else if(cat.mood >= 40 && cat.mood < 50)
+					cat.mood -= randomRate(14, 40);
+				else if(cat.mood >= 30 && cat.mood < 40)
+					cat.mood -= randomRate(15, 39);
+				else if(cat.mood >= 20 && cat.mood < 30)
+					cat.mood -= randomRate(15, 29);
+				else if(cat.mood >= 10 && cat.mood < 20)
+					cat.mood -= randomRate(10, 19);
+				else if(cat.mood > 0 && cat.mood < 10)
+					cat.mood -= randomRate(1, 9);
+				else if(cat.mood <= 0)
+					cat.mood = 0;
 				// setting the text
-				happinessText.setText('Happiness: ' + cat.happiness);
+				moodText.setText('Mood: ' + cat.mood);
 
 				// if the approach is successful, change the distance
 				if(cat.approachSuccessRate > roll)
@@ -159,7 +159,7 @@ battle.prototype = {
 				}
 				else
 				{
-					happinessText.setText('Happiness: ' + cat.happiness);
+					moodText.setText('Mood: ' + cat.mood);
 					actionText.setText('You failed to approach the cat.');
 				}
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
@@ -187,24 +187,24 @@ battle.prototype = {
 					catScale += 0.25;
 					cat.scale.setTo(catScale);
 
-					// change happiness
-					cat.happiness += randomRate(10, 25);
-					happinessText.setText('Happiness: ' + cat.happiness);
+					// change mood
+					cat.mood += randomRate(10, 25);
+					moodText.setText('Mood: ' + cat.mood);
 				}
 				else
 					actionText.setText('You failed to give the cat a treat.');
 
-				// cap distance and happiness
+				// cap distance and mood
 				if(distance <= 0)
 				{
 					distanceText.setText('Distance: 0 ft. away');
 					catScale = 1;
 					cat.scale.setTo(catScale);
 				}
-				if(cat.happiness >= 100)
+				if(cat.mood >= 100)
 				{
-					cat.happiness = 100;
-					happinessText.setText('Happiness: ' + cat.happiness);
+					cat.mood = 100;
+					moodText.setText('Mood: ' + cat.mood);
 				}
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
@@ -221,7 +221,7 @@ battle.prototype = {
 		{
 			turnText.setText('It is the cat\'s turn.');
 
-			var runChance = Math.log(cat.happiness) * 20 + 8;
+			var runChance = Math.log(cat.mood) * 20 + 8;
 			var roll = randomRate(1, 101);
 
 			if(runChance > roll)
@@ -231,7 +231,7 @@ battle.prototype = {
 			else
 			{
 				catText = 'The cat ran away...';
-				game.time.events.add(2000, function() {game.state.start('play');}, this);
+				game.time.events.add(1000, function() {game.state.start('play');}, this);
 			}
 				
 
