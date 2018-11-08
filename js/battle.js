@@ -38,7 +38,7 @@ battle.prototype = {
 
 		// telling player whose turn it is
 		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
-		turnText = game.add.text(game.width / 2, 100, 'It is your turn.', style2);
+		turnText = game.add.text(game.width / 2, 100, 'It\'s your turn.', style2);
 		turnText.anchor.setTo(0.5);
 
 		// creating action text to describe to player
@@ -91,11 +91,7 @@ battle.prototype = {
 
 		if(playerTurn)
 		{
-			// add a delay when changing text back
-			game.time.events.add(2000, function() 
-				{
-					turnText.setText('It\'s your turn.');
-				}, this);
+			turnText.setText('It\'s your turn.');
 			//--------------------------------- APPROACH ----------------------------------------------------------
 			if(arrow.x == approachText.x && ENTERkey.justPressed())
 			{
@@ -104,7 +100,35 @@ battle.prototype = {
 				console.log('approach roll: ' + roll);
 				console.log('cat success rate: ' + cat.approachSuccessRate);
 
-				// if the approach is successful
+				// change happiness
+				if(cat.happiness == 100)
+					cat.happiness -= randomRate(5, 25);
+				else if(cat.happiness >= 90 && cat.happiness < 100)
+					cat.happiness -= randomRate(6, 25);
+				else if(cat.happiness >= 80 && cat.happiness < 90)
+					cat.happiness -= randomRate(7, 30);
+				else if(cat.happiness >= 70 && cat.happiness < 80)
+					cat.happiness -= randomRate(8, 30);
+				else if(cat.happiness >= 60 && cat.happiness < 70)
+					cat.happiness -= randomRate(10, 35);
+				else if(cat.happiness >= 50 && cat.happiness < 60)
+					cat.happiness -= randomRate(12, 35);
+				else if(cat.happiness >= 40 && cat.happiness < 50)
+					cat.happiness -= randomRate(14, 40);
+				else if(cat.happiness >= 30 && cat.happiness < 40)
+					cat.happiness -= randomRate(15, 39);
+				else if(cat.happiness >= 20 && cat.happiness < 30)
+					cat.happiness -= randomRate(15, 29);
+				else if(cat.happiness >= 10 && cat.happiness < 20)
+					cat.happiness -= randomRate(10, 19);
+				else if(cat.happiness > 0 && cat.happiness < 10)
+					cat.happiness -= randomRate(1, 9);
+				else if(cat.happiness <= 0)
+					cat.happiness = 0;
+				// setting the text
+				happinessText.setText('Happiness: ' + cat.happiness);
+
+				// if the approach is successful, change the distance
 				if(cat.approachSuccessRate > roll)
 				{
 					// change stats
@@ -113,36 +137,6 @@ battle.prototype = {
 					distanceText.setText('Distance: ' + distance + ' ft. away');
 					catScale += 0.25;
 					cat.scale.setTo(catScale);
-
-					// change happiness
-					if(cat.happiness == 100)
-						cat.happiness -= randomRate(5, 25);
-					else if(cat.happiness >= 90 && cat.happiness < 100)
-						cat.happiness -= randomRate(6, 25);
-					else if(cat.happiness >= 80 && cat.happiness < 90)
-						cat.happiness -= randomRate(7, 30);
-					else if(cat.happiness >= 70 && cat.happiness < 80)
-						cat.happiness -= randomRate(8, 30);
-					else if(cat.happiness >= 60 && cat.happiness < 70)
-						cat.happiness -= randomRate(10, 35);
-					else if(cat.happiness >= 50 && cat.happiness < 60)
-						cat.happiness -= randomRate(12, 35);
-					else if(cat.happiness >= 40 && cat.happiness < 50)
-						cat.happiness -= randomRate(14, 40);
-					else if(cat.happiness >= 30 && cat.happiness < 40)
-						cat.happiness -= randomRate(15, 39);
-					else if(cat.happiness >= 20 && cat.happiness < 30)
-						cat.happiness -= randomRate(15, 29);
-					else if(cat.happiness >= 10 && cat.happiness < 20)
-						cat.happiness -= randomRate(10, 19);
-					else if(cat.happiness > 0 && cat.happiness < 10)
-						cat.happiness -= randomRate(1, 9);
-					else if(cat.happiness <= 0)
-					{
-						actionText.setText('Your cat ran away.');
-						game.state.start('play');
-					}
-					happinessText.setText('Happiness: ' + cat.happiness);
 
 					// cap distance
 					if(distance <= 0)
@@ -158,7 +152,7 @@ battle.prototype = {
 					happinessText.setText('Happiness: ' + cat.happiness);
 					actionText.setText('You failed to approach the cat.');
 				}
-				playerTurn = false;	
+				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
 //--------------------------------- GIVE TREAT ----------------------------------------------------------
 			if(arrow.x == treatText.x && ENTERkey.justPressed())
@@ -195,14 +189,14 @@ battle.prototype = {
 					cat.happiness = 100;
 					happinessText.setText('Happiness: ' + cat.happiness);
 				}
-				playerTurn = false;
+				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
 //--------------------------------- TAKE PHOTO ----------------------------------------------------------
 			if(arrow.x == photoText.x && ENTERkey.justPressed())
 			{
 				actionText.setText('You took a photo of the cat.');
 				// game.state.start('photo');
-				playerTurn = false;
+				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
 		}
 //--------------------------------- CAT TURN -------------------------------------------------------------
@@ -210,15 +204,11 @@ battle.prototype = {
 		{
 			catTurnText = 'It is the cat\'s turn.';
 			catText = 'The cat did something!';
+			turnText.setText(catTurnText);
+			actionText.setText(catText);
 
 			// add a delay when changing text
-			game.time.events.add(2000, function() 
-			{ 
-				turnText.setText(catTurnText);
-				console.log(catTurnText); 
-				actionText.setText(catText); 
-				playerTurn = true;
-			}, this);
+			game.time.events.add(2000, function() {playerTurn = true;}, this);
 		}
 	},
 };
