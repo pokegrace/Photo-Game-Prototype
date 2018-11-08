@@ -71,6 +71,9 @@ battle.prototype = {
 		ENTERkey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 		leftkey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 		rightkey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+
+		// static variable to make cat run chance happen once
+		counter = 0;
 	},
 	update: function() 
 	{
@@ -200,15 +203,30 @@ battle.prototype = {
 			}
 		}
 //--------------------------------- CAT TURN -------------------------------------------------------------
-		if(!playerTurn)
+		if(!playerTurn && counter == 0)
 		{
-			catTurnText = 'It is the cat\'s turn.';
-			catText = 'The cat did something!';
-			turnText.setText(catTurnText);
+			turnText.setText('It is the cat\'s turn.');
+
+			var runChance = Math.log(cat.happiness) * 20 + 8;
+			var roll = randomRate(1, 101);
+
+			if(runChance > roll)
+			{
+				catText = 'The cat is staring at you intently...';
+			}
+			else
+			{
+				catText = 'The cat ran away...';
+				game.time.events.add(2000, function() {game.state.start('play');}, this);
+			}
+				
+
 			actionText.setText(catText);
 
+			counter++;
+
 			// add a delay when changing text
-			game.time.events.add(2000, function() {playerTurn = true;}, this);
+			game.time.events.add(2000, function() {playerTurn = true; counter = 0;}, this);
 		}
 	},
 };
