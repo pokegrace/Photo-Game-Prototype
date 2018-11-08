@@ -53,13 +53,16 @@ battle.prototype = {
 
 		// adding text for possible actions
 		textStyle = {font: '32px Arial', fill: '#ffffff', align: 'center'};
-		approachText = game.add.text(300, 500, 'Approach', textStyle);
+		approachText = game.add.text(200, 500, 'Approach', textStyle);
 		approachText.anchor.setTo(0.5);
 
-		treatText = game.add.text(500, 500, 'Give Treat', textStyle);
+		waitText = game.add.text(400, 500, 'Wait', textStyle);
+		waitText.anchor.setTo(0.5);
+
+		treatText = game.add.text(600, 500, 'Give Treat', textStyle);
 		treatText.anchor.setTo(0.5);
 
-		photoText = game.add.text(700, 500, 'Take Photo', textStyle);
+		photoText = game.add.text(800, 500, 'Take Photo', textStyle);
 		photoText.anchor.setTo(0.5);
 
 		// pointer to actions
@@ -80,6 +83,8 @@ battle.prototype = {
 		console.log('Player turn: ' + playerTurn);
 		// tracking location of arrow
 		if(arrow.x == approachText.x && rightkey.justPressed())
+			arrow.x = waitText.x;
+		else if(arrow.x == waitText.x && rightkey.justPressed())
 			arrow.x = treatText.x;
 		else if(arrow.x == treatText.x && rightkey.justPressed())
 			arrow.x = photoText.x;
@@ -90,6 +95,8 @@ battle.prototype = {
 		else if(arrow.x == photoText.x && leftkey.justPressed())
 			arrow.x = treatText.x;
 		else if(arrow.x == treatText.x && leftkey.justPressed())
+			arrow.x = waitText.x;
+		else if(arrow.x == waitText.x && leftkey.justPressed())
 			arrow.x = approachText.x;
 
 		if(playerTurn)
@@ -157,6 +164,13 @@ battle.prototype = {
 				}
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
+//--------------------------------- WAIT AND WATCH ------------------------------------------------------
+			if(arrow.x == waitText.x && ENTERkey.justPressed())
+			{
+				actionText.setText('You wait patiently to see what the cat will do.');
+				game.time.events.add(2000, function() {playerTurn = false;}, this);
+			}
+
 //--------------------------------- GIVE TREAT ----------------------------------------------------------
 			if(arrow.x == treatText.x && ENTERkey.justPressed())
 			{
