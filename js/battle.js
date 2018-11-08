@@ -6,9 +6,10 @@ var battle = function(game)
 // Global state variables
 var arrow;
 var cat, catScale;
-var actionText, approachText, treatText, photoText;
-var distanceText;
-var happiness, happinessText;
+var actionText, turnText;
+var approachText, treatText, photoText;
+var distanceText, happinessText;
+var playerTurn;
 
 battle.prototype = {
 	preload: function() 
@@ -19,7 +20,7 @@ battle.prototype = {
 	{
 		// create
 		distance = 75;
-		happiness = 50;
+		playerTurn = true;
 
 		style1 = {font: "65px Arial", fill: "#ffffff", align: "center"};
 		title = game.add.text(game.width / 2, 50, 'Battle!', style1);
@@ -35,9 +36,13 @@ battle.prototype = {
 		// scaling cat for distance
 		catScale = 0.25;
 
-		// creating action text to describe to player
+		// telling player whose turn it is
 		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
-		actionText = game.add.text(game.width / 2, 100, 'Use left and right arrow keys to move cursor.', style2);
+		turnText = game.add.text(game.width / 2, 100, 'It is your turn.', style2);
+		turnText.anchor.setTo(0.5);
+
+		// creating action text to describe to player
+		actionText = game.add.text(game.width / 2, 150, 'Use left and right arrow keys to move cursor.', style2);
 		actionText.anchor.setTo(0.5);
 
 		distanceText = game.add.text(850, 25, 'Distance: 75 ft. away', style2);
@@ -62,13 +67,31 @@ battle.prototype = {
 		arrow.scale.setTo(0.07);
 		arrow.anchor.setTo(0.5);
 
+		// creating a text box in advance for cat's turn
+		textBox = game.add.sprite(game.width / 2, game.height / 2, 'textbox');
+		textBox.anchor.setTo(0.5);
+		// adding text to text box
+		var style = {font: '24px Arial', fill: '#FFFFFF', wordWrap: true, wordWrapWidth: textBox.width, align: 'center'};
+		var catText = game.add.text(0, 0, 'The cat did something!', style);
+		var enterText = game.add.text(20, 150, 'Press ESC to close.', style);
+		catText.anchor.setTo(0.5);
+		enterText.anchor.setTo(0.5);
+		textBox.addChild(catText);
+		textBox.addChild(enterText);
+		// set text box to invisible for now
+		textBox.visible = false;
+
 		// adding keys to control actions
 		ENTERkey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+		ESCkey = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
 		leftkey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 		rightkey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+
+		game.input.keyboard.removeKeyCapture(Phaser.Keyboard.ESC);
 	},
 	update: function() 
 	{
+		console.log('Player turn: ' + playerTurn);
 		// tracking location of arrow
 		if(arrow.x == approachText.x && rightkey.justPressed())
 			arrow.x = treatText.x;
@@ -83,108 +106,126 @@ battle.prototype = {
 		else if(arrow.x == treatText.x && leftkey.justPressed())
 			arrow.x = approachText.x;
 
-		// APPROACH
-		if(arrow.x == approachText.x && ENTERkey.justPressed())
+		if(playerTurn)
 		{
-			// comparing roll to cat.successRate
-			var roll = randomRate(1, 101);
-			console.log('approach roll: ' + roll);
-			console.log('cat success rate: ' + cat.approachSuccessRate);
-
-			// if cat.successRate > roll, then success!
-			if(cat.approachSuccessRate > roll)
+			turnText.setText('It is your turn.');
+			//--------------------------------- APPROACH ----------------------------------------------------------
+			if(arrow.x == approachText.x && ENTERkey.justPressed())
 			{
-				// changing stats
-				actionText.setText('You approached the cat.');
-				distance -= 25;
-				distanceText.setText('Distance: ' + distance + ' ft. away');
-				catScale += 0.25;
-				cat.scale.setTo(catScale);
+				// comparing roll to cat.successRate
+				var roll = randomRate(1, 101);
+				console.log('approach roll: ' + roll);
+				console.log('cat success rate: ' + cat.approachSuccessRate);
 
-				// change happiness
-				if(cat.happiness == 100)
-					cat.happiness -= randomRate(5, 25);
-				else if(cat.happiness >= 90 && cat.happiness < 100)
-					cat.happiness -= randomRate(6, 25);
-				else if(cat.happiness >= 80 && cat.happiness < 90)
-					cat.happiness -= randomRate(7, 30);
-				else if(cat.happiness >= 70 && cat.happiness < 80)
-					cat.happiness -= randomRate(8, 30);
-				else if(cat.happiness >= 60 && cat.happiness < 70)
-					cat.happiness -= randomRate(10, 35);
-				else if(cat.happiness >= 50 && cat.happiness < 60)
-					cat.happiness -= randomRate(12, 35);
-				else if(cat.happiness >= 40 && cat.happiness < 50)
-					cat.happiness -= randomRate(14, 40);
-				else if(cat.happiness >= 30 && cat.happiness < 40)
-					cat.happiness -= randomRate(15, 39);
-				else if(cat.happiness >= 20 && cat.happiness < 30)
-					cat.happiness -= randomRate(15, 29);
-				else if(cat.happiness >= 10 && cat.happiness < 20)
-					cat.happiness -= randomRate(10, 19);
-				else if(cat.happiness > 0 && cat.happiness < 10)
-					cat.happiness -= randomRate(1, 9);
-				else if(cat.happiness <= 0)
-					actionText.setText('Your cat ran away.');
-				happinessText.setText('Happiness: ' + cat.happiness);
+				// if cat.successRate > roll, then success!
+				if(cat.approachSuccessRate > roll)
+				{
+					// changing stats
+					actionText.setText('You approached the cat.');
+					distance -= 25;
+					distanceText.setText('Distance: ' + distance + ' ft. away');
+					catScale += 0.25;
+					cat.scale.setTo(catScale);
+
+					// change happiness
+					if(cat.happiness == 100)
+						cat.happiness -= randomRate(5, 25);
+					else if(cat.happiness >= 90 && cat.happiness < 100)
+						cat.happiness -= randomRate(6, 25);
+					else if(cat.happiness >= 80 && cat.happiness < 90)
+						cat.happiness -= randomRate(7, 30);
+					else if(cat.happiness >= 70 && cat.happiness < 80)
+						cat.happiness -= randomRate(8, 30);
+					else if(cat.happiness >= 60 && cat.happiness < 70)
+						cat.happiness -= randomRate(10, 35);
+					else if(cat.happiness >= 50 && cat.happiness < 60)
+						cat.happiness -= randomRate(12, 35);
+					else if(cat.happiness >= 40 && cat.happiness < 50)
+						cat.happiness -= randomRate(14, 40);
+					else if(cat.happiness >= 30 && cat.happiness < 40)
+						cat.happiness -= randomRate(15, 39);
+					else if(cat.happiness >= 20 && cat.happiness < 30)
+						cat.happiness -= randomRate(15, 29);
+					else if(cat.happiness >= 10 && cat.happiness < 20)
+						cat.happiness -= randomRate(10, 19);
+					else if(cat.happiness > 0 && cat.happiness < 10)
+						cat.happiness -= randomRate(1, 9);
+					else if(cat.happiness <= 0)
+						actionText.setText('Your cat ran away.');
+					happinessText.setText('Happiness: ' + cat.happiness);
+
+					// cap distance
+					if(distance <= 0)
+					{
+						actionText.setText('You cannot get any closer.');
+						distanceText.setText('Distance: 0 ft. away');
+						catScale = 1;
+						cat.scale.setTo(catScale);
+					}	
+				}
+				else
+				{
+					happinessText.setText('Happiness: ' + cat.happiness);
+					actionText.setText('You failed to approach the cat.');
+				}
+				playerTurn = false;	
 			}
-			else
+//--------------------------------- GIVE TREAT ----------------------------------------------------------
+			if(arrow.x == treatText.x && ENTERkey.justPressed())
 			{
-				happinessText.setText('Happiness: ' + cat.happiness);
-				actionText.setText('Approach failed. Your cat ran away.');
-				game.state.start('play');
-			}
+				var roll = randomRate(1, 101);
+				console.log('treat roll: ' + roll);
+				console.log('cat success rate: ' + cat.treatSuccessRate);
 
-			// cap distance
-			if(distance <= 0)
+				if(cat.treatSuccessRate > roll)
+				{
+					// changing stats
+					actionText.setText('You gave the cat a treat.');
+					distance -= 25;
+					distanceText.setText('Distance: ' + distance + ' ft. away');
+					catScale += 0.25;
+					cat.scale.setTo(catScale);
+
+					// change happiness
+					cat.happiness += randomRate(10, 25);
+					happinessText.setText('Happiness: ' + cat.happiness);
+				}
+				else
+					actionText.setText('You failed to give the cat a treat.');
+
+				// cap distance and happiness
+				if(distance <= 0)
+				{
+					distanceText.setText('Distance: 0 ft. away');
+					catScale = 1;
+					cat.scale.setTo(catScale);
+				}
+				if(cat.happiness >= 100)
+				{
+					cat.happiness = 100;
+					happinessText.setText('Happiness: ' + cat.happiness);
+				}
+				playerTurn = false;
+			}
+//--------------------------------- TAKE PHOTO ----------------------------------------------------------
+			if(arrow.x == photoText.x && ENTERkey.justPressed())
 			{
-				actionText.setText('You cannot get any closer.');
-				distanceText.setText('Distance: 0 ft. away');
-				catScale = 1;
-				cat.scale.setTo(catScale);
-			}			
+				actionText.setText('You took a photo of the cat.');
+				// game.state.start('photo');
+				playerTurn = false;
+			}
 		}
-		// GIVE TREAT
-		if(arrow.x == treatText.x && ENTERkey.justPressed())
+//--------------------------------- CAT TURN -------------------------------------------------------------
+		if(!playerTurn)
 		{
-			var roll = randomRate(1, 101);
-			console.log('treat roll: ' + roll);
-			console.log('cat success rate: ' + cat.treatSuccessRate);
+			turnText.setText('It is the cat\'s turn.');
+			textBox.visible = true;
 
-			if(cat.treatSuccessRate > roll)
+			if(ESCkey.justPressed())
 			{
-				// changing stats
-				actionText.setText('You gave the cat a treat.');
-				distance -= 25;
-				distanceText.setText('Distance: ' + distance + ' ft. away');
-				catScale += 0.25;
-				cat.scale.setTo(catScale);
-
-				// change happiness
-				cat.happiness += randomRate(10, 25);
-				happinessText.setText('Happiness: ' + cat.happiness);
+				textBox.visible = false;
+				playerTurn = true;
 			}
-			else
-				actionText.setText('You failed to give the cat a treat.');
-
-			// cap distance and happiness
-			if(distance <= 0)
-			{
-				distanceText.setText('Distance: 0 ft. away');
-				catScale = 1;
-				cat.scale.setTo(catScale);
-			}
-			if(cat.happiness >= 100)
-			{
-				cat.happiness = 100;
-				happinessText.setText('Happiness: ' + cat.happiness);
-			}
-		}
-		// TAKE PHOTO
-		if(arrow.x == photoText.x && ENTERkey.justPressed())
-		{
-			actionText.setText('You took a photo of the cat.');
-			// game.state.start('photo');
 		}
 	},
 };
