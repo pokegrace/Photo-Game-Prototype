@@ -6,7 +6,7 @@ var battle = function(game)
 // Global state variables
 var arrow;
 var cat, catScale;
-var actionText, turnText;
+var actionText, catText, turnText;
 var approachText, treatText, photoText;
 var distanceText, happinessText;
 var playerTurn;
@@ -67,27 +67,10 @@ battle.prototype = {
 		arrow.scale.setTo(0.07);
 		arrow.anchor.setTo(0.5);
 
-		// creating a text box in advance for cat's turn
-		textBox = game.add.sprite(game.width / 2, game.height / 2, 'textbox');
-		textBox.anchor.setTo(0.5);
-		// adding text to text box
-		var style = {font: '24px Arial', fill: '#FFFFFF', wordWrap: true, wordWrapWidth: textBox.width, align: 'center'};
-		var catText = game.add.text(0, 0, 'The cat did something!', style);
-		var enterText = game.add.text(20, 150, 'Press ESC to close.', style);
-		catText.anchor.setTo(0.5);
-		enterText.anchor.setTo(0.5);
-		textBox.addChild(catText);
-		textBox.addChild(enterText);
-		// set text box to invisible for now
-		textBox.visible = false;
-
 		// adding keys to control actions
 		ENTERkey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-		ESCkey = game.input.keyboard.addKey(Phaser.Keyboard.ESC);
 		leftkey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 		rightkey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-
-		game.input.keyboard.removeKeyCapture(Phaser.Keyboard.ESC);
 	},
 	update: function() 
 	{
@@ -108,7 +91,11 @@ battle.prototype = {
 
 		if(playerTurn)
 		{
-			turnText.setText('It is your turn.');
+			// add a delay when changing text back
+			game.time.events.add(2000, function() 
+				{
+					turnText.setText('It\'s your turn.');
+				}, this);
 			//--------------------------------- APPROACH ----------------------------------------------------------
 			if(arrow.x == approachText.x && ENTERkey.justPressed())
 			{
@@ -117,10 +104,10 @@ battle.prototype = {
 				console.log('approach roll: ' + roll);
 				console.log('cat success rate: ' + cat.approachSuccessRate);
 
-				// if cat.successRate > roll, then success!
+				// if the approach is successful
 				if(cat.approachSuccessRate > roll)
 				{
-					// changing stats
+					// change stats
 					actionText.setText('You approached the cat.');
 					distance -= 25;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
@@ -151,7 +138,10 @@ battle.prototype = {
 					else if(cat.happiness > 0 && cat.happiness < 10)
 						cat.happiness -= randomRate(1, 9);
 					else if(cat.happiness <= 0)
+					{
 						actionText.setText('Your cat ran away.');
+						game.state.start('play');
+					}
 					happinessText.setText('Happiness: ' + cat.happiness);
 
 					// cap distance
@@ -218,14 +208,17 @@ battle.prototype = {
 //--------------------------------- CAT TURN -------------------------------------------------------------
 		if(!playerTurn)
 		{
-			turnText.setText('It is the cat\'s turn.');
-			textBox.visible = true;
+			catTurnText = 'It is the cat\'s turn.';
+			catText = 'The cat did something!';
 
-			if(ESCkey.justPressed())
-			{
-				textBox.visible = false;
+			// add a delay when changing text
+			game.time.events.add(2000, function() 
+			{ 
+				turnText.setText(catTurnText);
+				console.log(catTurnText); 
+				actionText.setText(catText); 
 				playerTurn = true;
-			}
+			}, this);
 		}
 	},
 };
