@@ -11,6 +11,8 @@ function OverWorldCat(){
     this.lastRotation = this.rotation - 1;
     this.lastBody = {x:0, y:0};
 
+    this.counter = 0;
+
     game.add.existing(this);
 }
 
@@ -19,7 +21,7 @@ OverWorldCat.prototype.constructor = OverWorldCat;
 
 OverWorldCat.prototype.update = function(){
     // spin the cat
-    this.rotation = this.rotation + 0.01;
+    //this.rotation = this.rotation + 0.01;
 
 
     if (this.rotation != this.lastRotation ||
