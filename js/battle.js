@@ -85,6 +85,12 @@ battle.prototype = {
 		else if(arrow.x == treatText.x && leftkey.justPressed())
 			arrow.x = approachText.x;
 
+        // play selection switch sound
+        if (rightkey.justPressed() || leftkey.justPressed())
+        {
+            game.sound.play('menuSwitch');
+        }
+
 		// APPROACH
 		if(arrow.x == approachText.x && ENTERkey.justPressed())
 		{
@@ -124,11 +130,16 @@ battle.prototype = {
 				else if(cat.happiness <= 0)
 					actionText.setText('Your cat ran away.');
 				happinessText.setText('Happiness: ' + cat.happiness);
-			}
+
+                // play cat happy sound
+                game.sound.play('catHappy');
+            }
 			else if(!cat.approachSuccess)
 			{
 				happinessText.setText('Happiness: ' + cat.happiness);
 				actionText.setText('Approach failed. Your cat ran away.');
+                // play cat angry sound
+                game.sound.play('catAngry');
 			}
 
 			// cap distance
@@ -155,10 +166,17 @@ battle.prototype = {
 				// change happiness
 				cat.happiness += randomRate(10, 25);
 				happinessText.setText('Happiness: ' + cat.happiness);
+
+                // play cat happy sound
+                game.sound.play('catHappy');
 			}
 			else if(!cat.approachSuccess || !cat.treatSuccess)
-				actionText.setText('You failed to give the cat a treat.');
+			{
+                actionText.setText('You failed to give the cat a treat.');
 
+                // play cat angry sound
+                game.sound.play('catAngry');
+            }
 			// cap distance and happiness
 			if(distance <= 0)
 			{
@@ -166,7 +184,8 @@ battle.prototype = {
 				distanceText.setText('Distance: 0 ft. away');
 				catScale = 1;
 				cat.scale.setTo(catScale);
-			}
+
+            }
 			if(cat.happiness >= 100)
 			{
 				cat.happiness = 100;
@@ -176,8 +195,12 @@ battle.prototype = {
 		// TAKE PHOTO
 		if(arrow.x == photoText.x && ENTERkey.justPressed())
 		{
-			actionText.setText('You took a photo of the cat.');
+            // play shutter sound effect
+            game.sound.play('shutterNoise');
+
+            actionText.setText('You took a photo of the cat.');
 			// game.state.start('photo');
+
 		}
 	},
 };
