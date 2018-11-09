@@ -19,8 +19,9 @@ battle.prototype = {
 	create: function() 
 	{
 		// create
-		distance = 75;
 		playerTurn = true;
+		distance = (game.catDistance < 100) ? 100 : game.catDistance;
+		happiness = 50;
 
 		style1 = {font: "65px Arial", fill: "#ffffff", align: "center"};
 		title = game.add.text(game.width / 2, 50, 'Battle!', style1);
@@ -33,8 +34,9 @@ battle.prototype = {
 		// adding cat object 
 		cat = new Cat(rmood);
 		game.add.existing(cat);
-		// scaling cat for distance
-		catScale = 0.25;
+		// scaling cat: initial scale is distance * 0.1%
+		catScale = distance * 0.001;
+		cat.scale.setTo(catScale);
 
 		// telling player whose turn it is
 		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
@@ -45,7 +47,9 @@ battle.prototype = {
 		actionText = game.add.text(game.width / 2, 150, 'Use left and right arrow keys to move cursor.', style2);
 		actionText.anchor.setTo(0.5);
 
+
 		distanceText = game.add.text(850, 25, 'Distance: 75 ft. away', style2);
+        distanceText.setText('Distance: ' + distance + ' ft. away');
 		distanceText.anchor.setTo(0.5);
 
 		moodText = game.add.text(70, 25, 'Mood: ' + cat.mood, style2);
@@ -101,6 +105,13 @@ battle.prototype = {
 
 		if(playerTurn)
 		{
+
+        	// play selection switch sound
+        	if (rightkey.justPressed() || leftkey.justPressed())
+        	{
+           		game.sound.play('menuSwitch');
+        	}
+
 			turnText.setText('It\'s your turn.');
 			//--------------------------------- APPROACH ----------------------------------------------------------
 			if(arrow.x == approachText.x && ENTERkey.justPressed())
@@ -141,11 +152,13 @@ battle.prototype = {
 				// if the approach is successful, change the distance
 				if(cat.approachSuccessRate > roll)
 				{
+					// approach a random distance each time
+					var distRoll = randomRate(10, 65);
 					// change stats
 					actionText.setText('You approached the cat.');
-					distance -= 25;
+					distance -= distRoll;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
-					catScale += 0.25;
+					catScale += distRoll * 0.001;
 					cat.scale.setTo(catScale);
 
 					// cap distance
@@ -169,8 +182,7 @@ battle.prototype = {
 			{
 				actionText.setText('You wait patiently to see what the cat will do.');
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
-			}
-
+            }
 //--------------------------------- GIVE TREAT ----------------------------------------------------------
 			if(arrow.x == treatText.x && ENTERkey.justPressed())
 			{
@@ -182,9 +194,10 @@ battle.prototype = {
 				{
 					// changing stats
 					actionText.setText('You gave the cat a treat.');
-					distance -= 25;
+					// giving a treat will always give you +50 ft.
+					distance -= 50;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
-					catScale += 0.25;
+					catScale += 0.05;
 					cat.scale.setTo(catScale);
 
 					// change mood
@@ -212,6 +225,8 @@ battle.prototype = {
 			if(arrow.x == photoText.x && ENTERkey.justPressed())
 			{
 				actionText.setText('You took a photo of the cat.');
+				// play shutter sound effect
+           		game.sound.play('shutterNoise');
 				// game.state.start('photo');
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
@@ -230,13 +245,10 @@ battle.prototype = {
 			}
 			else
 			{
-				catText = 'The cat ran away...';
-				game.time.events.add(1000, function() {game.state.start('play');}, this);
+				actionText.setText('The cat ran away...');
+				game.time.events.add(2000, function() {game.state.start('play');}, this);
 			}
-				
-
 			actionText.setText(catText);
-
 			counter++;
 
 			// add a delay when changing text

@@ -31,8 +31,14 @@ play.prototype = {
 	update: function() 
 	{
 		if(battleKey.justPressed())
-			game.state.start('battle');
-		if(moveKey.justPressed())
-			game.state.start('move');
-	},
+		{
+            game.state.start('battle');
+            game.sound.play('gameStart');
+        }
+        if(moveKey.justPressed())
+		{
+            game.state.start('move');
+            game.sound.play('gameStart');
+	    }
+    },
 };

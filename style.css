@@ -1,0 +1,27 @@
+body
+{
+    color:black;
+    background-color: #facade;
+}
+
+h1, h3
+{
+    text-align: center;
+}
+
+div
+{
+    width: 1000px;
+    margin: auto;
+}
+
+
+p
+{
+    opacity: 0.0;
+}
+
+#credits:hover > p
+{
+    opacity: 1;
+}
