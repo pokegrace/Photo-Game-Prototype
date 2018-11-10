@@ -21,7 +21,7 @@ battle.prototype = {
 		// create
 		playerTurn = true;
 		distance = (game.catDistance < 100) ? 100 : game.catDistance;
-		// maxDistance = 235;
+		maxDistance = 240;
 		happiness = 50;
 
 		style1 = {font: "65px Arial", fill: "#ffffff", align: "center"};
@@ -38,7 +38,7 @@ battle.prototype = {
 		// scaling cat
 		if(distance <= 0)
 			catScale = 1;
-		catScale = 1 / distance;
+		catScale = (maxDistance - distance) / maxDistance;
 		cat.scale.setTo(catScale);
 
 		// telling player whose turn it is
@@ -161,7 +161,7 @@ battle.prototype = {
 					actionText.setText('You approached the cat.');
 					distance -= distRoll;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
-					catScale += 0.99 / distance;
+					catScale = (maxDistance - distance) / maxDistance;
 					cat.scale.setTo(catScale);
 
 					// cap distance
@@ -201,7 +201,7 @@ battle.prototype = {
 					// giving a treat will always give you +50 ft.
 					distance -= 50;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
-					catScale += 0.99 / distance;
+					catScale = (maxDistance - distance) / maxDistance;
 					cat.scale.setTo(catScale);
 
 					// change mood
