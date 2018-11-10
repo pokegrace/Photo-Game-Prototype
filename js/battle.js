@@ -38,7 +38,10 @@ battle.prototype = {
 		// scaling cat
 		if(distance <= 0)
 			catScale = 1;
-		catScale = (maxDistance - distance) / maxDistance;
+		else if(distance >= 200)
+			catScale = 0.2;
+		else
+			catScale = (maxDistance - distance) / maxDistance;
 		cat.scale.setTo(catScale);
 
 		// telling player whose turn it is
@@ -161,7 +164,10 @@ battle.prototype = {
 					actionText.setText('You approached the cat.');
 					distance -= distRoll;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
-					catScale = (maxDistance - distance) / maxDistance;
+					if(distance >= 200)
+						catScale = 0.2;
+					else
+						catScale = (maxDistance - distance) / maxDistance;
 					cat.scale.setTo(catScale);
 
 					// cap distance
@@ -201,7 +207,10 @@ battle.prototype = {
 					// giving a treat will always give you +50 ft.
 					distance -= 50;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
-					catScale = (maxDistance - distance) / maxDistance;
+					if(distance >= 200)
+						catScale = 0.2;
+					else
+						catScale = (maxDistance - distance) / maxDistance;
 					cat.scale.setTo(catScale);
 
 					// change mood
@@ -246,14 +255,13 @@ battle.prototype = {
 
 			if(runChance > roll)
 			{
-				catText = 'The cat is staring at you intently...';
+				actionText.setText('The cat is staring at you intently...');
 			}
 			else
 			{
 				actionText.setText('The cat ran away...');
 				game.time.events.add(2000, function() {game.state.start('play');}, this);
 			}
-			actionText.setText(catText);
 			counter++;
 
 			ENTERkey.enabled = true;
