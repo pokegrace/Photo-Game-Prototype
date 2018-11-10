@@ -9,6 +9,7 @@ window.onload = function()
 	game.state.add('play', play);
 	game.state.add('battle', battle);
 	game.state.add('move', move);
+	game.state.add('catstagram', catstagram);
 	game.state.start('Load');
 }
 
@@ -21,6 +22,7 @@ Load.prototype = {
 		game.load.image('cat', 'cat.png');
 		game.load.image('arrow', 'arrow.png');
 		game.load.image('obstacle', 'obstacle.png');
+		game.load.image('phone', 'phone.png');
 
         game.load.path = './assets/sounds/placeholders/'
         game.load.audio('catAngry', ['catAngry.mp3','catAngry.ogg']);
