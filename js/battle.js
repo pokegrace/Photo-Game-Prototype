@@ -21,6 +21,7 @@ battle.prototype = {
 		// create
 		playerTurn = true;
 		distance = (game.catDistance < 100) ? 100 : game.catDistance;
+		// maxDistance = 235;
 		happiness = 50;
 
 		style1 = {font: "65px Arial", fill: "#ffffff", align: "center"};
@@ -34,8 +35,10 @@ battle.prototype = {
 		// adding cat object 
 		cat = new Cat(rmood);
 		game.add.existing(cat);
-		// scaling cat: initial scale is distance * 0.1%
-		catScale = distance * 0.001;
+		// scaling cat
+		if(distance <= 0)
+			catScale = 1;
+		catScale = 1 / distance;
 		cat.scale.setTo(catScale);
 
 		// telling player whose turn it is
@@ -158,7 +161,7 @@ battle.prototype = {
 					actionText.setText('You approached the cat.');
 					distance -= distRoll;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
-					catScale += distRoll * 0.001;
+					catScale += 0.99 / distance;
 					cat.scale.setTo(catScale);
 
 					// cap distance
@@ -175,6 +178,7 @@ battle.prototype = {
 					moodText.setText('Mood: ' + cat.mood);
 					actionText.setText('You failed to approach the cat.');
 				}
+				ENTERkey.enabled = false;
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
 //--------------------------------- WAIT AND WATCH ------------------------------------------------------
@@ -197,7 +201,7 @@ battle.prototype = {
 					// giving a treat will always give you +50 ft.
 					distance -= 50;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
-					catScale += 0.05;
+					catScale += 0.99 / distance;
 					cat.scale.setTo(catScale);
 
 					// change mood
@@ -219,6 +223,7 @@ battle.prototype = {
 					cat.mood = 100;
 					moodText.setText('Mood: ' + cat.mood);
 				}
+				ENTERkey.enabled = false;
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
 //--------------------------------- TAKE PHOTO ----------------------------------------------------------
@@ -250,6 +255,8 @@ battle.prototype = {
 			}
 			actionText.setText(catText);
 			counter++;
+
+			ENTERkey.enabled = true;
 
 			// add a delay when changing text
 			game.time.events.add(2000, function() {playerTurn = true; counter = 0;}, this);
