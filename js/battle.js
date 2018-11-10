@@ -138,6 +138,7 @@ battle.prototype = {
 			{
 				happinessText.setText('Happiness: ' + cat.happiness);
 				actionText.setText('Approach failed. Your cat ran away.');
+                    setTimeout(function(){game.state.start('move')}, 2000);
                 // play cat angry sound
                 game.sound.play('catAngry');
 			}
