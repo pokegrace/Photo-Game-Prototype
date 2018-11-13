@@ -77,8 +77,9 @@ battle.prototype = {
 
 		// telling player whose turn it is
 		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
-		turnText = game.add.text(game.width / 2, 100, 'It\'s your turn.', style2);
+		turnText = game.add.text(925, 560, 'YOUR TURN', style2);
 		turnText.anchor.setTo(0.5);
+		turnText.scale.setTo(0.8, 1);
 
 		// creating action text to describe to player
 		style1 = {font: '24px Arial', fill: '#000000', align: 'center'};
@@ -187,7 +188,7 @@ battle.prototype = {
         	{
            		game.sound.play('menuSwitch');
         	}
-			turnText.setText('It\'s your turn.');
+			setTurn('player');
 			//--------------------------------- APPROACH ----------------------------------------------------------
 			if(choice == 2 && ENTERkey.justPressed())
 			{
@@ -317,7 +318,7 @@ battle.prototype = {
 //--------------------------------- CAT TURN -------------------------------------------------------------
 		if(!playerTurn && counter == 0)
 		{
-			turnText.setText('It is the cat\'s turn.');
+			setTurn('cat');
 
 			var runChance = Math.log(cat.mood) * 20 + 8;
 			var roll = randomRate(1, 101);
@@ -361,4 +362,18 @@ function enableKeys()
 	downkey.enabled = true;
 	leftkey.enabled = true;
 	rightkey.enabled = true;
+}
+
+function setTurn(turn)
+{
+	if(turn == 'player')
+	{
+		gallery.visible = false;
+		turnText.visible = true;
+	}
+	else if(turn == 'cat')
+	{
+		gallery.visible = true;
+		turnText.visible = false;
+	}
 }
