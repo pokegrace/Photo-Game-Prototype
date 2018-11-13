@@ -22,6 +22,15 @@ Load.prototype = {
 		game.load.image('arrow', 'arrow.png');
 		game.load.image('obstacle', 'obstacle.png');
 
+        // loading tile map
+
+		game.load.path = './assets/';
+        game.load.tilemap('tile_maps', 'CatographerMap.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.image('tiles', 'CatographerTiles.png');
+        game.load.image('obstacles', 'CatographerObstacles.png');
+
+
+        // loading audio
         game.load.path = './assets/sounds/placeholders/'
         game.load.audio('catAngry', ['catAngry.mp3','catAngry.ogg']);
         game.load.audio('catDetects', ['catDetects.mp3','catDetects.ogg']);
