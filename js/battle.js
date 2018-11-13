@@ -57,6 +57,8 @@ battle.prototype = {
 		battleTextBox = game.add.sprite(500, 530, 'battleUI', 'battletextbox');
 		battleTextBox.anchor.setTo(0.5);
 
+		moodBar = game.add.sprite(125, 15, 'battleUI', 'goodmood');
+
 		// randomly assign a mood to cat from (70 - 100)
 		rmood = randomRate(7, 11);
 		rmood *= 10;	
@@ -80,16 +82,17 @@ battle.prototype = {
 
 		// creating action text to describe to player
 		style1 = {font: '24px Arial', fill: '#000000', align: 'center'};
-		actionText = game.add.text(0, 0, 'Use arrow keys to navigate phone.', style1);
+		actionText = game.add.text(0, 0, 'Wait and watch.', style1);
 		actionText.anchor.setTo(0.5);
 		battleTextBox.addChild(actionText);
 
-		distanceText = game.add.text(850, 25, 'Distance: 75 ft. away', style2);
+		distanceText = game.add.text(500, 600, 'Distance: 75 ft. away', style2);
         distanceText.setText('Distance: ' + distance + ' ft. away');
 		distanceText.anchor.setTo(0.5);
 
-		moodText = game.add.text(70, 25, 'Mood: ' + cat.mood, style2);
+		moodText = game.add.text(100, 30, 'Mood: ' + cat.mood, style2);
 		moodText.anchor.setTo(0.5);
+		moodBar.addChild(moodText);
 
 		// adding keys to control button highlights
 		ENTERkey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -109,60 +112,70 @@ battle.prototype = {
 		if(choice == 0 && downkey.justPressed())
 		{
 			choice = 1;
+			actionText.setText('Give a treat.');
 			waitButton.frame = 8;
 			treatButton.frame = 6;
 		}
 		else if(choice == 1 && downkey.justPressed())
 		{
 			choice = 2;
+			actionText.setText('Approach.');
 			treatButton.frame = 7;
 			approachButton.frame = 10;
 		}
 		else if(choice == 1 && upkey.justPressed())
 		{
 			choice = 0;
+			actionText.setText('Wait and watch.');
 			treatButton.frame = 7;
 			waitButton.frame = 9;
 		}
 		else if(choice == 2 && upkey.justPressed())
 		{
 			choice = 1;
+			actionText.setText('Give a treat.');
 			approachButton.frame = 11;
 			treatButton.frame = 6;
 		}
 		else if(choice == 0 && rightkey.justPressed())
 		{
 			choice = 3;
+			actionText.setText('View the menu.');
 			waitButton.frame = 8;
 			menuButton.scale.setTo(1.2);
 		}
 		else if(choice == 3 && leftkey.justPressed())
 		{
 			choice = 0;
+			actionText.setText('Wait and watch.');
 			waitButton.frame = 9;
 			menuButton.scale.setTo(1);
 		}
 		else if(choice == 3 && downkey.justPressed())
 		{
 			choice = 4;
+			actionText.setText('Take a photo.');
 			menuButton.scale.setTo(1);
 			photoButton.scale.setTo(1.2);
 		}
 		else if(choice == 4 && upkey.justPressed())
 		{
 			choice = 3;
+			actionText.setText('View the menu.');
 			photoButton.scale.setTo(1);
 			menuButton.scale.setTo(1.2);
 		}
 		else if(choice == 4 && leftkey.justPressed())
 		{
 			choice = 1;
+			actionText.setText('Give a treat.');
 			photoButton.scale.setTo(1);
 			treatButton.frame = 6;
 		}
 		else if(choice == 1 && rightkey.justPressed())
 		{
 			choice = 4;
+			actionText.setText('Take a photo.');
 			treatButton.frame = 7;
 			photoButton.scale.setTo(1.2);
 		}
@@ -215,7 +228,7 @@ battle.prototype = {
 				if(cat.approachSuccessRate > roll)
 				{
 					// approach a random distance each time
-					var distRoll = randomRate(10, 65);
+					var distRoll = randomRate(20, 80);
 					// change stats
 					actionText.setText('You approached the cat.');
 					distance -= distRoll;
@@ -261,7 +274,7 @@ battle.prototype = {
 					// changing stats
 					actionText.setText('You gave the cat a treat.');
 					// giving a treat will always give you +50 ft.
-					distance -= 50;
+					distance -= 40;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
 					if(distance >= 200)
 						catScale = 0.2;
