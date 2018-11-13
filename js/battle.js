@@ -32,7 +32,6 @@ battle.prototype = {
 		// create
 		distance = (game.catDistance < 100) ? 100 : game.catDistance;
 		maxDistance = 240;
-		happiness = 50;
 
 		// for highlighting buttons
 		choice = 0;
@@ -380,6 +379,9 @@ function setTurn(turn)
 	if(turn == 'player')
 	{
 		playerTurn = true;
+		choice = 0;
+		waitButton.frame = 11;
+		actionText.setText('Wait and watch.');
 		gallery.visible = false;
 		turnText.visible = true;
 	}
