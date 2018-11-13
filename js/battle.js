@@ -30,7 +30,6 @@ battle.prototype = {
 	create: function() 
 	{
 		// create
-		playerTurn = true;
 		distance = (game.catDistance < 100) ? 100 : game.catDistance;
 		maxDistance = 240;
 		happiness = 50;
@@ -40,10 +39,6 @@ battle.prototype = {
 
 		// adding UI assets
 		panel = game.add.sprite(0, 0, 'battleUI', 'panels');
-
-		menuButton = game.add.sprite(925, 50, 'battleUI', 'menu');
-		menuButton.anchor.setTo(0.5);
-		panel.addChild(menuButton);
 
 		photoButton = game.add.sprite(925, 290, 'battleUI', 'camerabutton');
 		photoButton.anchor.setTo(0.5);
@@ -113,6 +108,8 @@ battle.prototype = {
 		leftkey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 		rightkey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 
+		setTurn('player');
+
 		// static variable to make cat run chance happen once
 		counter = 0;
 	},
@@ -149,34 +146,6 @@ battle.prototype = {
 			approachButton.frame = 13;
 			treatButton.frame = 8;
 		}
-		else if(choice == 0 && rightkey.justPressed())
-		{
-			choice = 3;
-			actionText.setText('View the menu.');
-			waitButton.frame = 10;
-			menuButton.scale.setTo(1.2);
-		}
-		else if(choice == 3 && leftkey.justPressed())
-		{
-			choice = 0;
-			actionText.setText('Wait and watch.');
-			waitButton.frame = 11;
-			menuButton.scale.setTo(1);
-		}
-		else if(choice == 3 && downkey.justPressed())
-		{
-			choice = 4;
-			actionText.setText('Take a photo.');
-			menuButton.scale.setTo(1);
-			photoButton.scale.setTo(1.2);
-		}
-		else if(choice == 4 && upkey.justPressed())
-		{
-			choice = 3;
-			actionText.setText('View the menu.');
-			photoButton.scale.setTo(1);
-			menuButton.scale.setTo(1.2);
-		}
 		else if(choice == 4 && leftkey.justPressed())
 		{
 			choice = 1;
@@ -199,7 +168,6 @@ battle.prototype = {
         	{
            		game.sound.play('menuSwitch');
         	}
-			setTurn('player');
 			//--------------------------------- APPROACH ----------------------------------------------------------
 			if(choice == 2 && ENTERkey.justPressed())
 			{
@@ -270,14 +238,14 @@ battle.prototype = {
 					actionText.setText(approachFailText[r]);
 				}
 				disableKeys();
-				game.time.events.add(2000, function() {playerTurn = false;}, this);
+				game.time.events.add(2000, function() {setTurn('cat');}, this);
 			}
 //--------------------------------- WAIT AND WATCH ------------------------------------------------------
 			if(choice == 0 && ENTERkey.justPressed())
 			{
 				actionText.setText('You wait patiently and watch.');
 				disableKeys();
-				game.time.events.add(2000, function() {playerTurn = false;}, this);
+				game.time.events.add(2000, function() {setTurn('cat');}, this);
             }
 //--------------------------------- GIVE TREAT ----------------------------------------------------------
 			if(choice == 1 && ENTERkey.justPressed())
@@ -324,7 +292,7 @@ battle.prototype = {
 					moodText.setText(cat.mood + ' / 100');
 				}
 				disableKeys();
-				game.time.events.add(2000, function() {playerTurn = false;}, this);
+				game.time.events.add(2000, function() {setTurn('cat');}, this);
 			}
 //--------------------------------- TAKE PHOTO ----------------------------------------------------------
 			if(choice == 4 && ENTERkey.justPressed())
@@ -334,7 +302,7 @@ battle.prototype = {
            		// randomly generate a text to appear in box
 				var r = randomRate(0, 3);
 				actionText.setText(photoSuccessText[r]);
-				game.time.events.add(2000, function() {playerTurn = false; game.state.start('catstagram');}, this);
+				game.time.events.add(2000, function() {setTurn('cat'); game.state.start('catstagram');}, this);
 			}
 		}
 //--------------------------------- CAT TURN -------------------------------------------------------------
@@ -377,7 +345,7 @@ battle.prototype = {
 			counter++;
 
 			// add a delay when changing text
-			game.time.events.add(2000, function() {playerTurn = true; enableKeys(); counter = 0;}, this);
+			game.time.events.add(2000, function() {setTurn('player'); enableKeys(); counter = 0;}, this);
 		}
 	},
 };
@@ -411,17 +379,18 @@ function setTurn(turn)
 {
 	if(turn == 'player')
 	{
+		playerTurn = true;
 		gallery.visible = false;
 		turnText.visible = true;
 	}
 	else if(turn == 'cat')
 	{
+		playerTurn = false;
 		gallery.visible = true;
 		turnText.visible = false;
 		waitButton.frame = 10;
 		treatButton.frame = 9;
 		approachButton.frame = 13;
-		menuButton.scale.setTo(1);
 		photoButton.scale.setTo(1);
 	}
 }
