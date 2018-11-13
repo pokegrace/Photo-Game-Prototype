@@ -375,5 +375,10 @@ function setTurn(turn)
 	{
 		gallery.visible = true;
 		turnText.visible = false;
+		waitButton.frame = 10;
+		treatButton.frame = 9;
+		approachButton.frame = 13;
+		menuButton.scale.setTo(1);
+		photoButton.scale.setTo(1);
 	}
 }
