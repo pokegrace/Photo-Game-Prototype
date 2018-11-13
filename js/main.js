@@ -1,4 +1,5 @@
 // global variables
+var distance;
 
 // State management
 window.onload = function() 
@@ -33,6 +34,9 @@ Load.prototype = {
         game.load.audio('scoringPage', ['scoringPage.mp3','scoringPage.ogg']);
         game.load.audio('shutterNoise', ['shutterNoise.mp3','shutterNoise.ogg']);
         game.load.audio('step', ['step.mp3','step.ogg']);
+
+        game.load.path = './assets/UI/';
+        game.load.atlas('battleUI', 'battleUI.png', 'battleUI.json');
 },
 	create: function()
 	{

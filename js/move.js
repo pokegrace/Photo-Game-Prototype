@@ -48,6 +48,7 @@ move.prototype = {
 	update: function() 
 	{
         game.catDistance = Math.floor(Phaser.Math.distance(player.x, player.y, cat.x, cat.y));
+        console.log('distance: ' + game.catDistance);
 
 
         game.physics.arcade.collide(player, overWorldWalls, function(){console.log("bump wall")}, null, this);
