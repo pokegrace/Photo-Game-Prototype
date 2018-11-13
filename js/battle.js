@@ -11,6 +11,17 @@ var approachText, treatText, photoText;
 var distanceText, moodText;
 var playerTurn;
 
+var approachSuccessText = ['Success!', 'You\'ve successfully moved closer.', 'The cat has yet to move.'];
+var approachFailText = ['The cat has moved away from you.', 'The cat appears unamused before moving.'];
+var treatSuccessText = ['The cat looks interested in you.', 'The cat appears to be looking cute for you.', 'The cat has taken the treat.'];
+var treatFailText = ['The cat does not appear to like the treat.', 'The cat looks horrified at you.', 'The cat doesn\'t take the treat.'];
+var photoSuccessText = ['Cat photo acquired!', 'Photo successful, time for Catstagram.', 'Time to show the world the photo.'];
+var catHappyText = ['The cat appears intrigued.', 'The cat looks visibly happy.'];
+var catNeutralText = ['They stare at you questioningly.', 'The cat doesn\'t appear to care about you.'];
+var catUnhappyText = ['They look ready to bolt any minute.', 'They look highly annoyed at you.', 'You\'re slightly afraid this cat may come up and claw you.',
+						'You can clearly tell this cat is unhappy.'];
+var catRunText = ['Cat has run away!', 'Cat was bored and left.', 'You scared the cat away!'];
+
 battle.prototype = {
 	preload: function() 
 	{
@@ -82,7 +93,7 @@ battle.prototype = {
 		turnText.scale.setTo(0.8, 1);
 
 		// creating action text to describe to player
-		style1 = {font: '24px Arial', fill: '#000000', align: 'center'};
+		style1 = {font: '20px Arial', fill: '#000000', align: 'center'};
 		actionText = game.add.text(0, 0, 'Wait and watch.', style1);
 		actionText.anchor.setTo(0.5);
 		battleTextBox.addChild(actionText);
@@ -230,8 +241,10 @@ battle.prototype = {
 				{
 					// approach a random distance each time
 					var distRoll = randomRate(20, 80);
+					// randomly generate a text to appear in box
+					var r = randomRate(0, 3);
 					// change stats
-					actionText.setText('You approached the cat.');
+					actionText.setText(approachSuccessText[r]);
 					distance -= distRoll;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
 					if(distance >= 200)
@@ -251,8 +264,10 @@ battle.prototype = {
 				}
 				else
 				{
+					// randomly generate a text to appear in box
+					var r = randomRate(0, 2);
 					moodText.setText(cat.mood + ' / 100');
-					actionText.setText('You failed to approach the cat.');
+					actionText.setText(approachFailText[r]);
 				}
 				disableKeys();
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
@@ -273,8 +288,9 @@ battle.prototype = {
 
 				if(cat.treatSuccessRate > roll)
 				{
-					// changing stats
-					actionText.setText('You gave the cat a treat.');
+					// randomly generate a text to appear in box
+					var r = randomRate(0, 3);
+					actionText.setText(treatSuccessText[r]);
 					// giving a treat will always give you +50 ft.
 					distance -= 40;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
@@ -289,7 +305,11 @@ battle.prototype = {
 					moodText.setText(cat.mood + ' / 100');
 				}
 				else
-					actionText.setText('You failed to give the cat a treat.');
+				{
+					// randomly generate a text to appear in box
+					var r = randomRate(0, 3);
+					actionText.setText(treatFailText[r]);
+				}
 
 				// cap distance and mood
 				if(distance <= 0)
@@ -311,8 +331,10 @@ battle.prototype = {
 			{
 				// play shutter sound effect
            		game.sound.play('shutterNoise');
-           		game.state.start('catstagram');
-				game.time.events.add(2000, function() {playerTurn = false;}, this);
+           		// randomly generate a text to appear in box
+				var r = randomRate(0, 3);
+				actionText.setText(photoSuccessText[r]);
+				game.time.events.add(2000, function() {playerTurn = false; game.state.start('catstagram');}, this);
 			}
 		}
 //--------------------------------- CAT TURN -------------------------------------------------------------
@@ -323,13 +345,33 @@ battle.prototype = {
 			var runChance = Math.log(cat.mood) * 20 + 8;
 			var roll = randomRate(1, 101);
 
+			// if runChance > roll then cat stays
 			if(runChance > roll)
 			{
-				actionText.setText('The cat is staring at you intently...');
+				if(cat.mood >= 67 && cat.mood <= 100)
+				{
+					// randomly generate a text to appear in box
+					var r = randomRate(0, 2);
+					actionText.setText(catHappyText[r]);
+				}
+				else if(cat.mood >= 34 && cat.mood < 67)
+				{
+					// randomly generate a text to appear in box
+					var r = randomRate(0, 2);
+					actionText.setText(catNeutralText[r]);
+				}
+				else if(cat.mood >= 0 && cat.mood < 34)
+				{
+					// randomly generate a text to appear in box
+					var r = randomRate(0, 4);
+					actionText.setText(catUnhappyText[r]);
+				}
 			}
 			else
 			{
-				actionText.setText('The cat ran away...');
+				// randomly generate a text to appear in box
+				var r = randomRate(0, 3);
+				actionText.setText(catRunText[r]);
 				game.time.events.add(2000, function() {enableKeys(); game.state.start('play');}, this);
 			}
 			counter++;
@@ -340,6 +382,7 @@ battle.prototype = {
 	},
 };
 
+// generates a random number within given range
 function randomRate(min, max)
 {
 	rand = Math.floor(Math.random() * (max - min) + min);
