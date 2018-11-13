@@ -54,6 +54,9 @@ battle.prototype = {
 		approachButton.anchor.setTo(0.5);
 		panel.addChild(approachButton);
 
+		battleTextBox = game.add.sprite(500, 530, 'battleUI', 'battletextbox');
+		battleTextBox.anchor.setTo(0.5);
+
 		// randomly assign a mood to cat from (70 - 100)
 		rmood = randomRate(7, 11);
 		rmood *= 10;	
@@ -76,9 +79,10 @@ battle.prototype = {
 		turnText.anchor.setTo(0.5);
 
 		// creating action text to describe to player
-		actionText = game.add.text(game.width / 2, 150, 'Use left and right arrow keys to move cursor.', style2);
+		style1 = {font: '24px Arial', fill: '#000000', align: 'center'};
+		actionText = game.add.text(0, 0, 'Use arrow keys to navigate phone.', style1);
 		actionText.anchor.setTo(0.5);
-
+		battleTextBox.addChild(actionText);
 
 		distanceText = game.add.text(850, 25, 'Distance: 75 ft. away', style2);
         distanceText.setText('Distance: ' + distance + ' ft. away');
@@ -242,7 +246,7 @@ battle.prototype = {
 //--------------------------------- WAIT AND WATCH ------------------------------------------------------
 			if(choice == 0 && ENTERkey.justPressed())
 			{
-				actionText.setText('You wait patiently to see what the cat will do.');
+				actionText.setText('You wait patiently and watch.');
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
             }
 //--------------------------------- GIVE TREAT ----------------------------------------------------------
