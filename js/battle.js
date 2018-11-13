@@ -200,7 +200,7 @@ battle.prototype = {
             game.sound.play('shutterNoise');
 
             actionText.setText('You took a photo of the cat.');
-			// game.state.start('photo');
+			game.state.start('catstagram');
 
 		}
 	},
