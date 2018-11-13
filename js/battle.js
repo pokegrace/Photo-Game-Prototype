@@ -24,9 +24,35 @@ battle.prototype = {
 		maxDistance = 240;
 		happiness = 50;
 
-		style1 = {font: "65px Arial", fill: "#ffffff", align: "center"};
-		title = game.add.text(game.width / 2, 50, 'Battle!', style1);
-		title.anchor.setTo(0.5);
+		// for highlighting buttons
+		choice = 0;
+
+		// adding UI assets
+		panel = game.add.sprite(0, 0, 'battleUI', 'panels');
+
+		menuButton = game.add.sprite(925, 50, 'battleUI', 'menu');
+		menuButton.anchor.setTo(0.5);
+		panel.addChild(menuButton);
+
+		photoButton = game.add.sprite(925, 290, 'battleUI', 'camerabutton');
+		photoButton.anchor.setTo(0.5);
+		panel.addChild(photoButton);
+
+		gallery = game.add.sprite(925, 560, 'battleUI', 'photogallery');
+		gallery.anchor.setTo(0.5);
+		panel.addChild(gallery);
+
+		waitButton = game.add.sprite(55, 130, 'battleUI', 'whighlight');
+		waitButton.anchor.setTo(0.5);
+		panel.addChild(waitButton);
+
+		treatButton = game.add.sprite(55, 315, 'battleUI', 'treat');
+		treatButton.anchor.setTo(0.5);
+		panel.addChild(treatButton);
+
+		approachButton = game.add.sprite(55, 500, 'battleUI', 'approach');
+		approachButton.anchor.setTo(0.5);
+		panel.addChild(approachButton);
 
 		// randomly assign a mood to cat from (70 - 100)
 		rmood = randomRate(7, 11);
@@ -61,27 +87,10 @@ battle.prototype = {
 		moodText = game.add.text(70, 25, 'Mood: ' + cat.mood, style2);
 		moodText.anchor.setTo(0.5);
 
-		// adding text for possible actions
-		textStyle = {font: '32px Arial', fill: '#ffffff', align: 'center'};
-		approachText = game.add.text(200, 500, 'Approach', textStyle);
-		approachText.anchor.setTo(0.5);
-
-		waitText = game.add.text(400, 500, 'Wait', textStyle);
-		waitText.anchor.setTo(0.5);
-
-		treatText = game.add.text(600, 500, 'Give Treat', textStyle);
-		treatText.anchor.setTo(0.5);
-
-		photoText = game.add.text(800, 500, 'Take Photo', textStyle);
-		photoText.anchor.setTo(0.5);
-
-		// pointer to actions
-		arrow = game.add.sprite(approachText.x, approachText.y + 50, 'arrow');
-		arrow.scale.setTo(0.07);
-		arrow.anchor.setTo(0.5);
-
-		// adding keys to control actions
+		// adding keys to control button highlights
 		ENTERkey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+		upkey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+		downkey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
 		leftkey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
 		rightkey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
 
@@ -91,34 +100,79 @@ battle.prototype = {
 	update: function() 
 	{
 		console.log('Player turn: ' + playerTurn);
-		// tracking location of arrow
-		if(arrow.x == approachText.x && rightkey.justPressed())
-			arrow.x = waitText.x;
-		else if(arrow.x == waitText.x && rightkey.justPressed())
-			arrow.x = treatText.x;
-		else if(arrow.x == treatText.x && rightkey.justPressed())
-			arrow.x = photoText.x;
-		else if(arrow.x == photoText.x && rightkey.justPressed())
-			arrow.x = approachText.x;
-		else if(arrow.x == approachText.x && leftkey.justPressed())
-			arrow.x = photoText.x;
-		else if(arrow.x == photoText.x && leftkey.justPressed())
-			arrow.x = treatText.x;
-		else if(arrow.x == treatText.x && leftkey.justPressed())
-			arrow.x = waitText.x;
-		else if(arrow.x == waitText.x && leftkey.justPressed())
-			arrow.x = approachText.x;
+		
+		// highlighting buttons based on choice
+		if(choice == 0 && downkey.justPressed())
+		{
+			choice = 1;
+			waitButton.frame = 8;
+			treatButton.frame = 6;
+		}
+		else if(choice == 1 && downkey.justPressed())
+		{
+			choice = 2;
+			treatButton.frame = 7;
+			approachButton.frame = 10;
+		}
+		else if(choice == 1 && upkey.justPressed())
+		{
+			choice = 0;
+			treatButton.frame = 7;
+			waitButton.frame = 9;
+		}
+		else if(choice == 2 && upkey.justPressed())
+		{
+			choice = 1;
+			approachButton.frame = 11;
+			treatButton.frame = 6;
+		}
+		else if(choice == 0 && rightkey.justPressed())
+		{
+			choice = 3;
+			waitButton.frame = 8;
+			menuButton.scale.setTo(1.2);
+		}
+		else if(choice == 3 && leftkey.justPressed())
+		{
+			choice = 0;
+			waitButton.frame = 9;
+			menuButton.scale.setTo(1);
+		}
+		else if(choice == 3 && downkey.justPressed())
+		{
+			choice = 4;
+			menuButton.scale.setTo(1);
+			photoButton.scale.setTo(1.2);
+		}
+		else if(choice == 4 && upkey.justPressed())
+		{
+			choice = 3;
+			photoButton.scale.setTo(1);
+			menuButton.scale.setTo(1.2);
+		}
+		else if(choice == 4 && leftkey.justPressed())
+		{
+			choice = 1;
+			photoButton.scale.setTo(1);
+			treatButton.frame = 6;
+		}
+		else if(choice == 1 && rightkey.justPressed())
+		{
+			choice = 4;
+			treatButton.frame = 7;
+			photoButton.scale.setTo(1.2);
+		}
 
 		if(playerTurn)
 		{
         	// play selection switch sound
-        	if (rightkey.justPressed() || leftkey.justPressed())
+        	if (rightkey.justPressed() || leftkey.justPressed() || upkey.justPressed() || downkey.justPressed())
         	{
            		game.sound.play('menuSwitch');
         	}
 			turnText.setText('It\'s your turn.');
 			//--------------------------------- APPROACH ----------------------------------------------------------
-			if(arrow.x == approachText.x && ENTERkey.justPressed())
+			if(choice == 2 && ENTERkey.justPressed())
 			{
 				// comparing roll to cat.successRate
 				var roll = randomRate(1, 101);
@@ -186,13 +240,13 @@ battle.prototype = {
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
 //--------------------------------- WAIT AND WATCH ------------------------------------------------------
-			if(arrow.x == waitText.x && ENTERkey.justPressed())
+			if(choice == 0 && ENTERkey.justPressed())
 			{
 				actionText.setText('You wait patiently to see what the cat will do.');
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
             }
 //--------------------------------- GIVE TREAT ----------------------------------------------------------
-			if(arrow.x == treatText.x && ENTERkey.justPressed())
+			if(choice == 1 && ENTERkey.justPressed())
 			{
 				var roll = randomRate(1, 101);
 				console.log('treat roll: ' + roll);
@@ -234,9 +288,8 @@ battle.prototype = {
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
 //--------------------------------- TAKE PHOTO ----------------------------------------------------------
-			if(arrow.x == photoText.x && ENTERkey.justPressed())
+			if(choice == 4 && ENTERkey.justPressed())
 			{
-				actionText.setText('You took a photo of the cat.');
 				// play shutter sound effect
            		game.sound.play('shutterNoise');
            		game.state.start('catstagram');
