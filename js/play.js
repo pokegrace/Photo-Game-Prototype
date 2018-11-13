@@ -16,8 +16,8 @@ play.prototype = {
 		title = game.add.text(game.width / 2, 50, 'Play!', style);
 		title.anchor.setTo(0.5);
 		
-		text = game.add.text(game.width / 4, 550, 'Press B to battle!', style);
-		text.anchor.setTo(0.5);
+//		text = game.add.text(game.width / 4, 550, 'Press B to battle!', style);
+//		text.anchor.setTo(0.5);
 
         text = game.add.text(game.width*3 / 4, 550, 'Press M to move!', style);
 		text.anchor.setTo(0.5);
