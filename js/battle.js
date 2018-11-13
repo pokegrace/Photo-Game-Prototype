@@ -90,7 +90,7 @@ battle.prototype = {
         distanceText.setText('Distance: ' + distance + ' ft. away');
 		distanceText.anchor.setTo(0.5);
 
-		moodText = game.add.text(100, 30, 'Mood: ' + cat.mood, style2);
+		moodText = game.add.text(110, 60, cat.mood + ' / 100', style2);
 		moodText.anchor.setTo(0.5);
 		moodBar.addChild(moodText);
 
@@ -113,42 +113,42 @@ battle.prototype = {
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
-			waitButton.frame = 8;
-			treatButton.frame = 6;
+			waitButton.frame = 10;
+			treatButton.frame = 8;
 		}
 		else if(choice == 1 && downkey.justPressed())
 		{
 			choice = 2;
 			actionText.setText('Approach.');
-			treatButton.frame = 7;
-			approachButton.frame = 10;
+			treatButton.frame = 9;
+			approachButton.frame = 12;
 		}
 		else if(choice == 1 && upkey.justPressed())
 		{
 			choice = 0;
 			actionText.setText('Wait and watch.');
-			treatButton.frame = 7;
-			waitButton.frame = 9;
+			treatButton.frame = 9;
+			waitButton.frame = 11;
 		}
 		else if(choice == 2 && upkey.justPressed())
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
-			approachButton.frame = 11;
-			treatButton.frame = 6;
+			approachButton.frame = 13;
+			treatButton.frame = 8;
 		}
 		else if(choice == 0 && rightkey.justPressed())
 		{
 			choice = 3;
 			actionText.setText('View the menu.');
-			waitButton.frame = 8;
+			waitButton.frame = 10;
 			menuButton.scale.setTo(1.2);
 		}
 		else if(choice == 3 && leftkey.justPressed())
 		{
 			choice = 0;
 			actionText.setText('Wait and watch.');
-			waitButton.frame = 9;
+			waitButton.frame = 11;
 			menuButton.scale.setTo(1);
 		}
 		else if(choice == 3 && downkey.justPressed())
@@ -170,13 +170,13 @@ battle.prototype = {
 			choice = 1;
 			actionText.setText('Give a treat.');
 			photoButton.scale.setTo(1);
-			treatButton.frame = 6;
+			treatButton.frame = 8;
 		}
 		else if(choice == 1 && rightkey.justPressed())
 		{
 			choice = 4;
 			actionText.setText('Take a photo.');
-			treatButton.frame = 7;
+			treatButton.frame = 9;
 			photoButton.scale.setTo(1.2);
 		}
 
@@ -222,7 +222,7 @@ battle.prototype = {
 				else if(cat.mood <= 0)
 					cat.mood = 0;
 				// setting the text
-				moodText.setText('Mood: ' + cat.mood);
+				moodText.setText(cat.mood + ' / 100');
 
 				// if the approach is successful, change the distance
 				if(cat.approachSuccessRate > roll)
@@ -250,16 +250,17 @@ battle.prototype = {
 				}
 				else
 				{
-					moodText.setText('Mood: ' + cat.mood);
+					moodText.setText(cat.mood + ' / 100');
 					actionText.setText('You failed to approach the cat.');
 				}
-				ENTERkey.enabled = false;
+				disableKeys();
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
 //--------------------------------- WAIT AND WATCH ------------------------------------------------------
 			if(choice == 0 && ENTERkey.justPressed())
 			{
 				actionText.setText('You wait patiently and watch.');
+				disableKeys();
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
             }
 //--------------------------------- GIVE TREAT ----------------------------------------------------------
@@ -284,7 +285,7 @@ battle.prototype = {
 
 					// change mood
 					cat.mood += randomRate(10, 25);
-					moodText.setText('Mood: ' + cat.mood);
+					moodText.setText(cat.mood + ' / 100');
 				}
 				else
 					actionText.setText('You failed to give the cat a treat.');
@@ -299,9 +300,9 @@ battle.prototype = {
 				if(cat.mood >= 100)
 				{
 					cat.mood = 100;
-					moodText.setText('Mood: ' + cat.mood);
+					moodText.setText(cat.mood + ' / 100');
 				}
-				ENTERkey.enabled = false;
+				disableKeys();
 				game.time.events.add(2000, function() {playerTurn = false;}, this);
 			}
 //--------------------------------- TAKE PHOTO ----------------------------------------------------------
@@ -328,13 +329,12 @@ battle.prototype = {
 			else
 			{
 				actionText.setText('The cat ran away...');
-				game.time.events.add(2000, function() {game.state.start('play');}, this);
+				game.time.events.add(2000, function() {enableKeys(); game.state.start('play');}, this);
 			}
 			counter++;
-			ENTERkey.enabled = true;
 
 			// add a delay when changing text
-			game.time.events.add(2000, function() {playerTurn = true; counter = 0;}, this);
+			game.time.events.add(2000, function() {playerTurn = true; enableKeys(); counter = 0;}, this);
 		}
 	},
 };
@@ -343,4 +343,22 @@ function randomRate(min, max)
 {
 	rand = Math.floor(Math.random() * (max - min) + min);
 	return rand;
+}
+
+function disableKeys()
+{
+	ENTERkey.enabled = false;
+	upkey.enabled = false;
+	downkey.enabled = false;
+	leftkey.enabled = false;
+	rightkey.enabled = false;
+}
+
+function enableKeys()
+{
+	ENTERkey.enabled = true;
+	upkey.enabled = true;
+	downkey.enabled = true;
+	leftkey.enabled = true;
+	rightkey.enabled = true;
 }
