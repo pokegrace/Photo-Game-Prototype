@@ -9,6 +9,7 @@ window.onload = function()
 	game.state.add('Load', Load);
 	game.state.add('play', play);
 	game.state.add('battle', battle);
+	game.state.add('moveTutorial', moveTutorial);
 	game.state.add('move', move);
 	game.state.add('catstagram', catstagram);
 	game.state.start('Load');
