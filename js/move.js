@@ -14,32 +14,42 @@ move.prototype = {
 	},
 	create: function() 
 	{
-		// create
-        // wall group
-        overWorldWalls = game.add.group();
-        overWorldWalls.enableBody = true;
-        game.physics.enable(overWorldWalls, Phaser.Physics.ARCADE);
+        // draw the map
+        map = game.add.tilemap('tile_maps')
+        map.addTilesetImage('CatographerObstacles', 'obstacles');
+        map.addTilesetImage('CatographerTiles', 'tiles');
+        backgroundLayer = map.createLayer(0)
 
-        var wall = game.add.sprite(game.world.width/2 + 50, game.world.height/2, 'obstacle', null, overWorldWalls);
-        wall.scale.x = 0.2;
-        wall.scale.y = 0.2;
-        wall.body.immovable = true;
-
-        var wall = game.add.sprite(game.world.width/2 + 120, game.world.height/2 + 40, 'obstacle', null, overWorldWalls);
-        wall.scale.x = 0.2;
-        wall.scale.y = 0.2;
-        wall.body.immovable = true;
-
-        var wall = game.add.sprite(game.world.width/2 + 160, game.world.height/2 + -80, 'obstacle', null, overWorldWalls);
-        wall.scale.x = 0.2;
-        wall.scale.y = 0.2;
-        wall.body.immovable = true;
+        obstacleLayer = map.createLayer(1)
+        map.setCollisionByExclusion([], true, 1, true);
+        obstacleLayer.resizeWorld();
 
         // player character
-		player = new Player();
+		player = new Player(20, 20);
+
+
+        topLayer = map.createLayer(2)
+
+
+        // create
+        // wall group
+        overWorldWalls = game.add.group();
+        map.collision.Collisions.forEach(function(obstacle)
+        {
+            var o = game.add.sprite(obstacle.x, obstacle.y, 'cat')
+            game.physics.enable(o, Phaser.Physics.ARCADE)
+            o.body.width = obstacle.width;
+            o.body.height = obstacle.height;
+            o.body.immovable = true;
+            o.alpha= 0;
+            overWorldWalls.add(o);
+        })
+
+        game.camera.follow(player);
+        //game.camera.setSize(100,100);
 
         // target cat
-        cat = new OverWorldCat();
+        cat = new OverWorldCat(800, 50);
 
 
 
@@ -50,7 +60,8 @@ move.prototype = {
         game.catDistance = Math.floor(Phaser.Math.distance(player.x, player.y, cat.x, cat.y));
         console.log('distance: ' + game.catDistance);
 
-
+        // check player collision agains obstacle layer
+        game.physics.arcade.collide(player, overWorldWalls, reportCollision, null, this);
         game.physics.arcade.collide(player, overWorldWalls, function(){console.log("bump wall")}, null, this);
 
         if (this.physics.arcade.collide(cat, player))
@@ -64,10 +75,6 @@ move.prototype = {
         {
             catFlees(cat, player);
         }
-        if(player.x < 0 || player.x > game.width || player.y < 0 || player.y > game.height){
-	   game.state.restart();
-	}
-
     },
 };
 
@@ -80,3 +87,4 @@ function catFlees (cat, player) {
      cat.body.velocity.x = 4 * player.body.velocity.x;
      cat.body.velocity.y = 4 * player.body.velocity.y;
 }
+function reportCollision(x,y){console.log("",x,y)}

@@ -1,5 +1,5 @@
-function OverWorldCat(){
-    Phaser.Sprite.call( this, game, game.width * 3 /4 , game.height / 2, 'cat');
+function OverWorldCat(x, y){
+    Phaser.Sprite.call( this, game, x , y, 'cat');
 
     this.anchor.setTo(0.5);
     this.scale.setTo(0.25);
@@ -91,7 +91,7 @@ OverWorldCat.prototype.drawConeAroundWalls = function(ray) {
 
 
         // For each of the walls...
-        overWorldWalls.forEach(function(wall) {
+        map.collision.Collisions.forEach(function(wall) {
             // Create an array of lines that represent the four edges of each wall
             var lines = [
                 new Phaser.Line(wall.x, wall.y, wall.x + wall.width, wall.y),
@@ -100,7 +100,7 @@ OverWorldCat.prototype.drawConeAroundWalls = function(ray) {
                     wall.x + wall.width, wall.y + wall.height),
                 new Phaser.Line(wall.x, wall.y + wall.height,
                     wall.x + wall.width, wall.y + wall.height)
-            ];
+            ]
 
             // Test each of the edges in this wall against the ray.
             // If the ray intersects any of the edges then the wall must be in the way.
