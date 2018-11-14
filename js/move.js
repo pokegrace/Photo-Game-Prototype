@@ -16,18 +16,20 @@ move.prototype = {
 	{
         // draw the map
         map = game.add.tilemap('tile_maps')
+        map.addTilesetImage('CatographerObstacles', 'obstacles');
         map.addTilesetImage('CatographerTiles', 'tiles');
         backgroundLayer = map.createLayer(0)
-
-        // player character
-		player = new Player(20, 20);
-
-        map.addTilesetImage('CatographerObstacles', 'obstacles');
-
 
         obstacleLayer = map.createLayer(1)
         map.setCollisionByExclusion([], true, 1, true);
         obstacleLayer.resizeWorld();
+
+        // player character
+		player = new Player(20, 20);
+
+
+        topLayer = map.createLayer(2)
+
 
         // create
         // wall group
