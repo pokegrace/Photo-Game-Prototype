@@ -27,7 +27,9 @@ play.prototype = {
 
 		battleKey = game.input.keyboard.addKey(Phaser.Keyboard.B);
 		moveKey = game.input.keyboard.addKey(Phaser.Keyboard.M);
-	},
+
+
+},
 	update: function() 
 	{
 		if(battleKey.justPressed())

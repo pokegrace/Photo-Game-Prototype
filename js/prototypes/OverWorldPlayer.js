@@ -1,6 +1,6 @@
-function Player()
+function Player(x, y)
 {
-    Phaser.Sprite.call( this, game, game.width / 4, game.height / 2, 'cat')
+    Phaser.Sprite.call( this, game, x, y, 'cat')
     this.anchor.setTo(0.5);
     this.scale.setTo(0.25);
     game.physics.enable(this, Phaser.Physics.ARCADE)
@@ -11,6 +11,7 @@ function Player()
 
     this.steppingSound = game.add.audio('step');
     this.steppingSound.volume = 0.3;
+    this.body.collideWorldBounds=true;
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -31,7 +32,7 @@ Player.prototype.update = function()
     if (this.crawling)
     {
         game.playerIsSneaking = true;
-        player.tint = 0x222222;
+        player.tint = 0x777777;
     }
     else
     {
