@@ -25,7 +25,7 @@ move.prototype = {
         obstacleLayer.resizeWorld();
 
         // player character
-		player = new Player(20, 20);
+		player = new Player(20, 20, true);
 
 
         topLayer = map.createLayer(2)

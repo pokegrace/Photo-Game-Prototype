@@ -39,7 +39,7 @@ play.prototype = {
         }
         if(moveKey.justPressed())
 		{
-            game.state.start('move');
+            game.state.start('moveTutorial');
             game.sound.play('gameStart');
 	    }
     },
