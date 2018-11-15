@@ -73,6 +73,8 @@ battle.prototype = {
 		rmood = randomRate(7, 11);
 		rmood *= 10;	
 
+		setMoodBar(rmood);
+
 		// adding cat object 
 		cat = new Cat(rmood);
 		game.add.existing(cat);
@@ -396,5 +398,35 @@ function setTurn(turn)
 		treatButton.frame = 9;
 		approachButton.frame = 15;
 		photoButton.scale.setTo(1);
+	}
+}
+
+function setMoodBar(mood)
+{
+	// tinting mood bar
+	if(mood >= 80 && mood <= 100)
+	{
+		moodBar.scale.setTo(1);
+		moodBar.tint = 0x228B22;
+	}
+	else if(mood >= 60 && mood < 80)
+	{
+		moodBar.scale.setTo(0.7, 1);
+		moodBar.tint = 0xADFF2F;
+	}
+	else if(mood >= 40 && mood < 60)
+	{
+		moodBar.scale.setTo(0.5, 1);
+		moodBar.tint = 0xFFFF66;
+	}
+	else if(mood >= 20 && mood < 40)
+	{
+		moodBar.scale.setTo(0.3, 1);
+		moodBar.tint = 0xFFA500;
+	}
+	else if(mood >= 10 && mood < 20)
+	{
+		moodBar.scale.setTo(0.3, 1);
+		moodBar.tint = 0xFF0000;
 	}
 }
