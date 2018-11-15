@@ -2,7 +2,7 @@ function Player(x, y)
 {
     Phaser.Sprite.call( this, game, x, y, 'cat')
     this.anchor.setTo(0.5);
-    this.scale.setTo(0.25);
+    this.scale.setTo(0.2);
     game.physics.enable(this, Phaser.Physics.ARCADE)
     
     game.add.existing(this);
