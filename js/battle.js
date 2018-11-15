@@ -66,7 +66,8 @@ battle.prototype = {
 		battleTextBox = game.add.sprite(500, 530, 'battleUI', 'battletextbox');
 		battleTextBox.anchor.setTo(0.5);
 
-		moodBar = game.add.sprite(125, 15, 'battleUI', 'whiteMood');
+		moodHead = game.add.sprite(125, 15, 'battleUI', 'moodHead');
+		moodBar = game.add.sprite(175, 33, 'battleUI', 'moodBar');
 		moodOutline = game.add.sprite(125, 15, 'battleUI', 'moodOutline');
 
 		// randomly assign a mood to cat from (70 - 100)
@@ -125,42 +126,42 @@ battle.prototype = {
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
-			waitButton.frame = 10;
-			treatButton.frame = 8;
+			waitButton.frame = 12;
+			treatButton.frame = 10;
 		}
 		else if(choice == 1 && downkey.justPressed())
 		{
 			choice = 2;
 			actionText.setText('Approach.');
-			treatButton.frame = 9;
-			approachButton.frame = 14;
+			treatButton.frame = 11;
+			approachButton.frame = 15;
 		}
 		else if(choice == 1 && upkey.justPressed())
 		{
 			choice = 0;
 			actionText.setText('Wait and watch.');
-			treatButton.frame = 9;
-			waitButton.frame = 11;
+			treatButton.frame = 11;
+			waitButton.frame = 13;
 		}
 		else if(choice == 2 && upkey.justPressed())
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
-			approachButton.frame = 15;
-			treatButton.frame = 8;
+			approachButton.frame = 0;
+			treatButton.frame = 10;
 		}
 		else if(choice == 4 && leftkey.justPressed())
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
 			photoButton.scale.setTo(1);
-			treatButton.frame = 8;
+			treatButton.frame = 10;
 		}
 		else if(choice == 1 && rightkey.justPressed())
 		{
 			choice = 4;
 			actionText.setText('Take a photo.');
-			treatButton.frame = 9;
+			treatButton.frame = 11;
 			photoButton.scale.setTo(1.2);
 		}
 
@@ -204,14 +205,16 @@ battle.prototype = {
 					cat.mood -= randomRate(1, 9);
 				else if(cat.mood <= 0)
 					cat.mood = 0;
+
 				// setting the text
 				moodText.setText(cat.mood + ' / 100');
+				setMoodBar(cat.mood);
 
 				// if the approach is successful, change the distance
 				if(cat.approachSuccessRate > roll)
 				{
 					// approach a random distance each time
-					var distRoll = randomRate(20, 80);
+					var distRoll = randomRate(20, 60);
 					// randomly generate a text to appear in box
 					var r = randomRate(0, 3);
 					// change stats
@@ -237,7 +240,6 @@ battle.prototype = {
 				{
 					// randomly generate a text to appear in box
 					var r = randomRate(0, 2);
-					moodText.setText(cat.mood + ' / 100');
 					actionText.setText(approachFailText[r]);
 				}
 				disableKeys();
@@ -262,7 +264,7 @@ battle.prototype = {
 					// randomly generate a text to appear in box
 					var r = randomRate(0, 3);
 					actionText.setText(treatSuccessText[r]);
-					// giving a treat will always give you +50 ft.
+					// giving a treat will always give you +40 ft.
 					distance -= 40;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
 					if(distance >= 200)
@@ -274,6 +276,7 @@ battle.prototype = {
 					// change mood
 					cat.mood += randomRate(10, 25);
 					moodText.setText(cat.mood + ' / 100');
+					setMoodBar(cat.mood);
 				}
 				else
 				{
@@ -293,6 +296,7 @@ battle.prototype = {
 				{
 					cat.mood = 100;
 					moodText.setText(cat.mood + ' / 100');
+					setMoodBar(cat.mood);
 				}
 				disableKeys();
 				game.time.events.add(2000, function() {setTurn('cat');}, this);
@@ -384,7 +388,7 @@ function setTurn(turn)
 	{
 		playerTurn = true;
 		choice = 0;
-		waitButton.frame = 11;
+		waitButton.frame = 13;
 		actionText.setText('Wait and watch.');
 		catTurn.visible = false;
 		yourTurn.visible = true;
@@ -394,9 +398,9 @@ function setTurn(turn)
 		playerTurn = false;
 		catTurn.visible = true;
 		yourTurn.visible = false;
-		waitButton.frame = 10;
-		treatButton.frame = 9;
-		approachButton.frame = 15;
+		waitButton.frame = 12;
+		treatButton.frame = 11;
+		approachButton.frame = 0;
 		photoButton.scale.setTo(1);
 	}
 }
@@ -408,25 +412,30 @@ function setMoodBar(mood)
 	{
 		moodBar.scale.setTo(1);
 		moodBar.tint = 0x228B22;
+		moodHead.tint = 0x228B22;
 	}
 	else if(mood >= 60 && mood < 80)
 	{
 		moodBar.scale.setTo(0.7, 1);
 		moodBar.tint = 0xADFF2F;
+		moodHead.tint = 0xADFF2F;
 	}
 	else if(mood >= 40 && mood < 60)
 	{
 		moodBar.scale.setTo(0.5, 1);
 		moodBar.tint = 0xFFFF66;
+		moodHead.tint = 0xFFFF66;
 	}
 	else if(mood >= 20 && mood < 40)
 	{
 		moodBar.scale.setTo(0.3, 1);
 		moodBar.tint = 0xFFA500;
+		moodHead.tint = 0xFFA500;
 	}
 	else if(mood >= 10 && mood < 20)
 	{
 		moodBar.scale.setTo(0.3, 1);
 		moodBar.tint = 0xFF0000;
+		moodHead.tint = 0xFF0000;
 	}
 }
