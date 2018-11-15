@@ -66,7 +66,8 @@ battle.prototype = {
 		battleTextBox = game.add.sprite(500, 530, 'battleUI', 'battletextbox');
 		battleTextBox.anchor.setTo(0.5);
 
-		moodBar = game.add.sprite(125, 15, 'battleUI', 'goodmood');
+		moodBar = game.add.sprite(125, 15, 'battleUI', 'whiteMood');
+		moodOutline = game.add.sprite(125, 15, 'battleUI', 'moodOutline');
 
 		// randomly assign a mood to cat from (70 - 100)
 		rmood = randomRate(7, 11);
@@ -99,7 +100,7 @@ battle.prototype = {
 
 		moodText = game.add.text(110, 60, cat.mood + ' / 100', style2);
 		moodText.anchor.setTo(0.5);
-		moodBar.addChild(moodText);
+		moodOutline.addChild(moodText);
 
 		// adding keys to control button highlights
 		ENTERkey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -122,42 +123,42 @@ battle.prototype = {
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
-			waitButton.frame = 9;
-			treatButton.frame = 7;
+			waitButton.frame = 10;
+			treatButton.frame = 8;
 		}
 		else if(choice == 1 && downkey.justPressed())
 		{
 			choice = 2;
 			actionText.setText('Approach.');
-			treatButton.frame = 8;
-			approachButton.frame = 12;
+			treatButton.frame = 9;
+			approachButton.frame = 14;
 		}
 		else if(choice == 1 && upkey.justPressed())
 		{
 			choice = 0;
 			actionText.setText('Wait and watch.');
-			treatButton.frame = 8;
-			waitButton.frame = 10;
+			treatButton.frame = 9;
+			waitButton.frame = 11;
 		}
 		else if(choice == 2 && upkey.justPressed())
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
-			approachButton.frame = 13;
-			treatButton.frame = 7;
+			approachButton.frame = 15;
+			treatButton.frame = 8;
 		}
 		else if(choice == 4 && leftkey.justPressed())
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
 			photoButton.scale.setTo(1);
-			treatButton.frame = 7;
+			treatButton.frame = 8;
 		}
 		else if(choice == 1 && rightkey.justPressed())
 		{
 			choice = 4;
 			actionText.setText('Take a photo.');
-			treatButton.frame = 8;
+			treatButton.frame = 9;
 			photoButton.scale.setTo(1.2);
 		}
 
@@ -381,7 +382,7 @@ function setTurn(turn)
 	{
 		playerTurn = true;
 		choice = 0;
-		waitButton.frame = 10;
+		waitButton.frame = 11;
 		actionText.setText('Wait and watch.');
 		catTurn.visible = false;
 		yourTurn.visible = true;
@@ -391,9 +392,9 @@ function setTurn(turn)
 		playerTurn = false;
 		catTurn.visible = true;
 		yourTurn.visible = false;
-		waitButton.frame = 9;
-		treatButton.frame = 8;
-		approachButton.frame = 13;
+		waitButton.frame = 10;
+		treatButton.frame = 9;
+		approachButton.frame = 15;
 		photoButton.scale.setTo(1);
 	}
 }
