@@ -83,7 +83,7 @@ move.prototype = {
         }
 
 
-        if (Phaser.Math.distance(cat.x, cat.y, player.x, player.y) < 100 &&
+        if (Phaser.Math.distance(cat.x, cat.y, player.x, player.y) < 50 &&
             !player.crawling)
         {
             if(timer <= 0){
@@ -99,11 +99,10 @@ move.prototype = {
 	game.physics.arcade.collide(player, treat2, pickup, null, this);
 	game.physics.arcade.collide(player, treat3, pickup, null, this);
 
-	cat.coneRange = 0;
 	if( catFlee == true){
 	 cat.x = path[pi].x;
 	 cat.y = path[pi].y;
-	 cat.rotation = path[pi].angle;
+	 cat.rotation = path[pi].angle+180;
 	 pi--;
 	 if (pi < 0)
             {
@@ -136,11 +135,19 @@ function pickup(player, treat){
 function plot(){
 	path = [];
 
-	var t = 1/game.width;
+	var t = 1/3000;
 	for(var i=0;i<1;i+=t){
 	 var px = game.math.linearInterpolation(points.x, i);
          var py = game.math.linearInterpolation(points.y, i);
 	 var node = { x: px, y: py, angle: 0 };
+    	 	node.angle = game.math.angleBetweenPoints(cat, node);
+		if(i > 0.08){node.angle = node.angle+45;}
+		if(i > 0.2){node.angle = node.angle-45;}
+		if(i > 0.3){node.angle = node.angle+45;}
+		if(i > 0.4){node.angle = node.angle+45;}
+		if(i > 0.5){node.angle = node.angle+45;}
+		if(i > 0.7){node.angle = node.angle-45;}
+		if(i > 0.9){node.angle = node.angle+45;}
 	 path.push(node);
 	 ix++;
 	}
