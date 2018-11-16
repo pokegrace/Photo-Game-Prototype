@@ -18,10 +18,6 @@ battleTutorial.prototype = {
 		photoButton.anchor.setTo(0.5);
 		panel.addChild(photoButton);
 
-		catTurn = game.add.sprite(925, 560, 'battleUI', 'catturn');
-		catTurn.anchor.setTo(0.5);
-		panel.addChild(catTurn);
-
 		yourTurn = game.add.sprite(925, 560, 'battleUI', 'yourturn');
 		yourTurn.anchor.setTo(0.5);
 		panel.addChild(yourTurn);
@@ -57,7 +53,7 @@ battleTutorial.prototype = {
 		
 		// creating action text to describe to player
 		style1 = {font: '20px Arial', fill: '#000000', align: 'center', wordWrap: true, wordWrapWidth: 350};
-		actionText = game.add.text(0, 0, 'Wait and watch.', style1);
+		actionText = game.add.text(0, 0, 'Action Text', style1);
 		actionText.anchor.setTo(0.5);
 		battleTextBox.addChild(actionText);
 
@@ -77,7 +73,7 @@ battleTutorial.prototype = {
 		enterButton.anchor.setTo(0.5);
 		tutorialPanel.addChild(enterButton);
 		tutorialStyle = {font: '18px Arial', fill: '#000000', align: 'center', wordWrap: true, wordWrapWidth: 350};
-		tutorialText = game.add.text(0, 0, 'Welcome to the battle state!\nInside the battle, you only get one photo so make it count! You get 4 actions, each will affect the cat\'s mood.', tutorialStyle);
+		tutorialText = game.add.text(0, 0, 'Welcome to the battle state!\nInside the battle, you only get one photo so make it count! You have 4 actions, each will affect the cat\'s mood.', tutorialStyle);
 		tutorialText.anchor.setTo(0.5);
 		tutorialPanel.addChild(tutorialText);
 
