@@ -125,7 +125,7 @@ battle.prototype = {
 		if(choice == 0 && downkey.justPressed())
 		{
 			choice = 1;
-			actionText.setText('Give a treat.');
+			actionText.setText('Give a treat. You have: ' + treats + ' treats.');
 			waitButton.frame = 12;
 			treatButton.frame = 10;
 		}
@@ -146,14 +146,14 @@ battle.prototype = {
 		else if(choice == 2 && upkey.justPressed())
 		{
 			choice = 1;
-			actionText.setText('Give a treat.');
+			actionText.setText('Give a treat. You have: ' + treats + ' treats.');
 			approachButton.frame = 0;
 			treatButton.frame = 10;
 		}
 		else if(choice == 4 && leftkey.justPressed())
 		{
 			choice = 1;
-			actionText.setText('Give a treat.');
+			actionText.setText('Give a treat. You have: ' + treats + ' treats.');
 			photoButton.scale.setTo(1);
 			treatButton.frame = 10;
 		}
@@ -253,7 +253,7 @@ battle.prototype = {
 				game.time.events.add(2000, function() {setTurn('cat');}, this);
             }
 //--------------------------------- GIVE TREAT ----------------------------------------------------------
-			if(choice == 1 && ENTERkey.justPressed())
+			if(choice == 1 && ENTERkey.justPressed() && treats > 0)
 			{
 				var roll = randomRate(1, 101);
 				console.log('treat roll: ' + roll);
@@ -261,12 +261,16 @@ battle.prototype = {
 
 				if(cat.treatSuccessRate > roll)
 				{
+					treats--;
 					// randomly generate a text to appear in box
 					var r = randomRate(0, 3);
 					actionText.setText(treatSuccessText[r]);
+
 					// giving a treat will always give you +40 ft.
 					distance -= 40;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
+
+					// setting scale according to distance
 					if(distance >= 200)
 						catScale = 0.2;
 					else
@@ -298,6 +302,12 @@ battle.prototype = {
 					moodText.setText(cat.mood + ' / 100');
 					setMoodBar(cat.mood);
 				}
+				disableKeys();
+				game.time.events.add(2000, function() {setTurn('cat');}, this);
+			}
+			else if(choice == 1 && ENTERkey.justPressed() && treats <= 0)
+			{
+				actionText.setText('You have no treats!');
 				disableKeys();
 				game.time.events.add(2000, function() {setTurn('cat');}, this);
 			}

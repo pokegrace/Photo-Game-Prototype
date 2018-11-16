@@ -96,4 +96,5 @@ function reportCollision(x,y){console.log("",x,y)}
 
 function pickup(player, treat){
    treat.kill();
+   treats++;
 }

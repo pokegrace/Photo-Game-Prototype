@@ -1,5 +1,6 @@
 // global variables
 var distance;
+var treats = 0;
 
 // State management
 window.onload = function() 
