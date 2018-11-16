@@ -25,6 +25,7 @@ Load.prototype = {
 		game.load.image('arrow', 'arrow.png');
 		game.load.image('obstacle', 'obstacle.png');
 		game.load.image('phone', 'phone.png');
+		game.load.spritesheet('char', 'rpg_sprite_walk.png', 24, 32, 36);
 
 
         //load cat photos
