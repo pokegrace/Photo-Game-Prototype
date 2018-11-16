@@ -26,6 +26,30 @@ Load.prototype = {
 		game.load.image('obstacle', 'obstacle.png');
 		game.load.image('phone', 'phone.png');
 
+
+        //load cat photos
+		game.load.path = './assets/catPhotos/';
+        pictureNumbers = [
+            ['FA',2],
+            ['MA',4],
+            ['CA',3],
+            ['FN',2],
+            ['MN',4],
+            ['CN',5],
+            ['FH',2],
+            ['MH',3],
+            ['CH',4]
+        ]
+        for (var i = 0; i < pictureNumbers.length; i++)
+        {
+            var catClass = pictureNumbers[i][0];
+            for (var inClass = 1; inClass <= pictureNumbers[i][1]; inClass++)
+            {
+                game.load.image(catClass + inClass, catClass+inClass+'.jpg');
+            }
+        }
+
+
         // loading tile map
 
 		game.load.path = './assets/';
