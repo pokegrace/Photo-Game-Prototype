@@ -21,6 +21,8 @@ var catNeutralText = ['They stare at you questioningly.', 'The cat doesn\'t appe
 var catUnhappyText = ['They look ready to bolt any minute.', 'They look highly annoyed at you.', 'You\'re slightly afraid this cat may come up and claw you.',
 						'You can clearly tell this cat is unhappy.'];
 var catRunText = ['Cat has run away!', 'Cat was bored and left.', 'You scared the cat away!'];
+var catPoseText = ['The cat lazily changes positions.', 'The cat contently changes poses.', 'The cat yawns and changes poses.',  
+					'The cat moves into a new pose while looking annoyed at you.'];
 
 battle.prototype = {
 	preload: function() 
@@ -88,15 +90,14 @@ battle.prototype = {
 			catScale = (maxDistance - distance) / maxDistance;
 		cat.scale.setTo(catScale);
 
-		// telling player whose turn it is
-		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
-
+		
 		// creating action text to describe to player
-		style1 = {font: '20px Arial', fill: '#000000', align: 'center'};
+		style1 = {font: '20px Arial', fill: '#000000', align: 'center', wordWrap: true, wordWrapWidth: 350};
 		actionText = game.add.text(0, 0, 'Wait and watch.', style1);
 		actionText.anchor.setTo(0.5);
 		battleTextBox.addChild(actionText);
 
+		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
 		distanceText = game.add.text(500, 600, 'Distance: 75 ft. away', style2);
         distanceText.setText('Distance: ' + distance + ' ft. away');
 		distanceText.anchor.setTo(0.5);
@@ -328,7 +329,8 @@ battle.prototype = {
 			setTurn('cat');
 
 			var runChance = Math.log(cat.mood) * 20 + 8;
-			var roll = randomRate(1, 101);
+			var roll = randomRate(1, 101);	// for run chance
+			var roll2 = randomRate(1, 101);	// for change pose chance
 
 			// if runChance > roll then cat stays
 			if(runChance > roll)
@@ -350,6 +352,32 @@ battle.prototype = {
 					// randomly generate a text to appear in box
 					var r = randomRate(0, 4);
 					actionText.setText(catUnhappyText[r]);
+				}
+			}
+			// if second roll >= 50, cat changes poses
+			if(roll2 >= 50)
+			{
+				var r = randomRate(1, 11);
+				if(cat.mood >= 67 && cat.mood <= 100)
+				{
+					if(r <= 5)
+						actionText.setText(catPoseText[0]);
+					else if(r > 5)
+						actionText.setText(catPoseText[1]);
+				}
+				else if(cat.mood >= 34 && cat.mood < 67)
+				{
+					if(r <= 5)
+						actionText.setText(catPoseText[0]);
+					else if(r > 5)
+						actionText.setText(catPoseText[2]);
+				}
+				else if(cat.mood >= 0 && cat.mood < 34)
+				{
+					if(r <= 5)
+						actionText.setText(catPoseText[0]);
+					else if(r > 5)
+						actionText.setText(catPoseText[3]);
 				}
 			}
 			else
