@@ -31,6 +31,7 @@ battle.prototype = {
 	{
 		// create
 		distance = (game.catDistance < 100) ? 100 : game.catDistance;
+		game.startDistance = (game.catDistance < 100) ? 100 : game.catDistance;
 		maxDistance = 240;
 
 		// for highlighting buttons
@@ -302,6 +303,8 @@ battle.prototype = {
            		// randomly generate a text to appear in box
 				var r = randomRate(0, 3);
 				actionText.setText(photoSuccessText[r]);
+                game.photoDistance = distance;
+                game.catMood = cat.mood;
 				game.time.events.add(2000, function() {setTurn('cat'); game.state.start('catstagram');}, this);
 			}
 		}
