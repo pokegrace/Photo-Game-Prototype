@@ -12,16 +12,10 @@ catstagram.prototype = {
 	create: function() 
 	{
 
-		 style = {font: "45px Comic Sans MS", fill: '#facade', align: 'center'};
 
-		 catstagramTitleText = game.add.text(game.world.width/2, 25, 'Catstagram', style);
-         catstagramTitleText.anchor.setTo(0.5);
-
-        // create phone
-
-
-        phone = game.add.sprite(game.world.width/2 + 200, 100, 'phone', null);
+        phone = game.add.sprite(game.world.width/2 + 200, game.height/2, 'phone', null);
         phone.enableBody = true;
+        phone.anchor.set(0.5)
         game.physics.enable(phone, Phaser.Physics.ARCADE);
         phone.body.velocity.x = -300;
         var catDistanceScore = 100* (game.startDistance - game.photoDistance)/game.startDistance;
@@ -31,7 +25,7 @@ catstagram.prototype = {
 
         console.log(this.numberOfLikes);
         this.likeStyle = {font: "20px Comic Sans MS", fill: 'red', align: 'left', wordWrapWidth: 300, wordWrap: true};
-        this.likeText = game.add.text(game.world.width/2 + 15 , 535, "", this.likeStyle);
+        this.likeText = game.add.text(phone.x-50 , 535, "", this.likeStyle);
         this.displayedLikes = 0;
         this.comment = null;
         this.photo = null;
@@ -67,18 +61,20 @@ catstagram.prototype = {
             
 		    style = {font: "20px Comic Sans MS", fill: '#000000', align: 'left', wordWrapWidth: 300, wordWrap: true};
             if (this.comment === null)
-                this.comment = game.add.text(game.world.width/2 - 20, 570, generateComment(), style);
+                this.comment = game.add.text(phone.x+10, phone.y+185, generateComment(), style);
+                this.comment.anchor.set(0.5)
                 //add PHOTO here;
                 console.log(this.catDistanceKey, this.catMoodKey, "Before drawing")
                 var key = this.catDistanceKey +  this.catMoodKey +
                     Math.ceil(Math.random()*this.pictureNumbers[this.catDistanceKey + this.catMoodKey])
                 if (this.photo == null)
-                this.photo = game.add.sprite(640, 380, key);
+                this.photo = game.add.sprite(phone.x+15, phone.y-35, key);
                 this.photo.scale.x = 0.5;
                 this.photo.scale.y = 0.5;
-                this.photo.anchor.x = 0.5;
-                this.photo.anchor.y = 0.5;
+                this.photo.anchor.set(0.5);
 
+                this.likeText.x = phone.x-110;
+                this.likeText.y = phone.y+120;
                 var numberOfLikes = this.numberOfLikes
                 var likeText = this.likeText;
                 var displayedLikes = this.displayedLikes;
