@@ -1,12 +1,10 @@
-function Player(x, y, active)
+function Player(x, y)
 {
     Phaser.Sprite.call( this, game, x, y, 'cat')
     this.anchor.setTo(0.5);
     this.scale.setTo(0.25);
     game.physics.enable(this, Phaser.Physics.ARCADE)
     
-
-    this.active = active;
     game.add.existing(this);
 
     this.crawling = false;
@@ -24,8 +22,6 @@ Player.prototype.create = function()
 }
 Player.prototype.update = function()
 {
-    if (!this.active) return;
-
     // check if the player is sneaking
     var control = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
     this.crawling = control.isDown;
