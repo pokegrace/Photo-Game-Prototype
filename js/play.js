@@ -27,6 +27,7 @@ play.prototype = {
 
 		battleKey = game.input.keyboard.addKey(Phaser.Keyboard.B);
 		moveKey = game.input.keyboard.addKey(Phaser.Keyboard.M);
+		tutorialKey = game.input.keyboard.addKey(Phaser.Keyboard.T);
 
 
 },
@@ -41,6 +42,10 @@ play.prototype = {
 		{
             game.state.start('moveTutorial');
             game.sound.play('gameStart');
+	    }
+	    if(tutorialKey.justPressed())
+	    {
+	    	game.state.start('battleTutorial');
 	    }
     },
 };
