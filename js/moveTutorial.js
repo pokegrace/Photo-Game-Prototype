@@ -43,6 +43,9 @@ moveTutorial.prototype = {
 		title = game.add.text(game.width / 2, game.height/2, "Hello and welcome to Catographer!\nHere you’ll sneak up on cats to get the best shot.\nIf you land in the cat’s line of sight, it’ll start the photo battle.\nYou may use the objects you see to hide behind so the cat doesn’t spot you.\nTry to get as close to the cat as possible without the cat running away.\nUse the arrow keys to move and hit shift to move silently towards the cat.\nCollect treats on the map to help later on in the photo battle.", this.style)
         title.anchor.setTo(0.5);
  
+        enterButton = game.add.sprite(game.width/2, 500, 'enterButton');
+        enterButton.scale.setTo(0.6);
+        enterButton.anchor.setTo(0.5);
 
     },
 	update: function() 
