@@ -354,6 +354,13 @@ battle.prototype = {
 					actionText.setText(catUnhappyText[r]);
 				}
 			}
+			else
+			{
+				// randomly generate a text to appear in box
+				var r = randomRate(0, 3);
+				actionText.setText(catRunText[r]);
+				game.time.events.add(2000, function() {enableKeys(); game.state.start('play');}, this);
+			}
 			// if second roll >= 50, cat changes poses
 			if(roll2 >= 50)
 			{
@@ -379,13 +386,6 @@ battle.prototype = {
 					else if(r > 5)
 						actionText.setText(catPoseText[3]);
 				}
-			}
-			else
-			{
-				// randomly generate a text to appear in box
-				var r = randomRate(0, 3);
-				actionText.setText(catRunText[r]);
-				game.time.events.add(2000, function() {enableKeys(); game.state.start('play');}, this);
 			}
 			counter++;
 
