@@ -331,6 +331,7 @@ battle.prototype = {
 			var runChance = Math.log(cat.mood) * 20 + 8;
 			var roll = randomRate(1, 101);	// for run chance
 			var rPose = randomRate(1, 12);	// for random pose chance
+			var rFrame = randomRate (1, 11);
 
 			// if runChance > roll then cat stays
 			if(runChance > roll)
@@ -345,9 +346,15 @@ battle.prototype = {
 						actionText.setText(catHappyText[r]);
 					}
 					else if(rPose > 6 && rPose <= 9)
+					{
 						actionText.setText(catPoseText[0]);
+						changePose(cat.frame);
+					}
 					else if(rPose > 9)
+					{
 						actionText.setText(catPoseText[1]);
+						changePose(cat.frame);
+					}
 				}
 				else if(cat.mood >= 34 && cat.mood < 67)
 				{
@@ -359,9 +366,15 @@ battle.prototype = {
 						actionText.setText(catNeutralText[r]);
 					}
 					else if(rPose > 6 && rPose <= 9)
+					{
 						actionText.setText(catPoseText[0]);
+						changePose(cat.frame);
+					}
 					else if(rPose > 9)
+					{
 						actionText.setText(catPoseText[2]);
+						changePose(cat.frame);
+					}
 				}
 				else if(cat.mood >= 0 && cat.mood < 34)
 				{
@@ -373,9 +386,15 @@ battle.prototype = {
 						actionText.setText(catUnhappyText[r]);
 					}
 					else if(rPose > 6 && rPose <= 9)
+					{
 						actionText.setText(catPoseText[0]);
+						changePose(cat.frame);
+					}
 					else if(rPose > 9)
+					{
 						actionText.setText(catPoseText[3]);
+						changePose(cat.frame);
+					}
 				}
 			}
 			else
@@ -473,5 +492,31 @@ function setMoodBar(mood)
 		moodBar.scale.setTo(0.3, 1);
 		moodBar.tint = 0xFF0000;
 		moodHead.tint = 0xFF0000;
+	}
+}
+
+function changePose(frame)
+{
+	var r = randomRate(1, 11);
+	if(frame == 0)
+	{
+		if(r <= 5)
+			cat.frame = 1;
+		else if(r > 5)
+			cat.frame = 2;
+	}
+	else if(frame == 1)
+	{
+		if(r <= 5)
+			cat.frame = 0;
+		else if(r > 5)
+			cat.frame = 2;
+	}
+	else if(frame == 2)
+	{
+		if(r <= 5)
+			cat.frame = 0;
+		else if(r > 5)
+			cat.frame = 1;
 	}
 }
