@@ -82,7 +82,7 @@ move.prototype = {
             catIsCaught(cat, player);
         }
 
-
+ 
         if (Phaser.Math.distance(cat.x, cat.y, player.x, player.y) < 100 &&
             !player.crawling)
         {
