@@ -398,7 +398,7 @@ function setTurn(turn)
 	}
 	else if(turn == 'cat')
 	{
-        game.sound.play('catTakesTurn');
+        game.playMeow()
 		playerTurn = false;
 		catTurn.visible = true;
 		yourTurn.visible = false;

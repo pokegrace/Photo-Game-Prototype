@@ -121,8 +121,8 @@ OverWorldCat.prototype.drawConeAroundWalls = function(ray) {
     if (distanceToPlayer < distanceToWall)
     {
         console.log(cat, player);
+        game.playMeow();
         game.state.start('battle');
-        game.sound.play('catDetects');
     }
     return (closestIntersection) ? closestIntersection: point;
 

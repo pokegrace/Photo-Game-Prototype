@@ -79,6 +79,12 @@ Load.prototype = {
         game.load.audio('Battle', ['BattleMusic.mp3','BattleMusic.ogg']);
         game.load.audio('Overworld', ['OverworldMusic.mp3','OverworldMusic.ogg']);
 
+        game.playMeow = function(){
+            if (Math.random()>0.5)
+                game.sound.play('catTakesTurn');
+            else
+                game.sound.play('catDetects');
+        }
 
         game.music = [];
 
