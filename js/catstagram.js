@@ -30,6 +30,7 @@ catstagram.prototype = {
         this.displayedLikes = 0;
         this.comment = null;
         this.photo = null;
+        returnTriggered = false;
 
         this.catMoodKey = 'A';
         this.catDistanceKey = 'F';
@@ -58,6 +59,11 @@ catstagram.prototype = {
     },
 	update: function() 
 	{
+        var enterKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+    if(enterKey.justPressed() && returnTriggered)
+		{
+            game.state.start('play');
+	    }
         //have phone drop into screen
 
         if (phone.x < game.world.width/2 - 50) {phone.body.velocity.x += 80}
@@ -83,7 +89,6 @@ catstagram.prototype = {
                 var numberOfLikes = this.numberOfLikes
                 var likeText = this.likeText;
                 var displayedLikes = this.displayedLikes;
-                returnTriggered = false;
                 cal = setInterval(function()
                 {
                  
@@ -104,14 +109,7 @@ catstagram.prototype = {
                     }
                     else
                     {
-                        setTimeout(function()
-                        {
-                            if (!returnTriggered)
-                            {
-                                returnTriggered = true
-                                game.state.start('play');
-                            }
-                        }, 10000);
+                        returnTriggered = true
                         window.clearInterval(cal);
                     }
                 }, 10)
