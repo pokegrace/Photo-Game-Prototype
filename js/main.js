@@ -1,5 +1,6 @@
 // global variables
 var distance;
+var treats = 0;
 
 // State management
 window.onload = function() 
@@ -9,6 +10,7 @@ window.onload = function()
 	game.state.add('Load', Load);
 	game.state.add('play', play);
 	game.state.add('battle', battle);
+	game.state.add('battleTutorial', battleTutorial); 
 	game.state.add('moveTutorial', moveTutorial);
 	game.state.add('move', move);
 	game.state.add('catstagram', catstagram);
@@ -57,7 +59,7 @@ Load.prototype = {
         game.load.tilemap('tile_maps', 'CatographerMap.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('tiles', 'CatographerTiles.png');
         game.load.image('obstacles', 'CatographerObstacles.png');
-
+        game.load.atlas('catPoses', 'catPoses.png', 'catPoses.json');
 
         // loading audio
         game.load.path = './assets/sounds/placeholders/'
@@ -72,6 +74,8 @@ Load.prototype = {
 
         game.load.path = './assets/UI/';
         game.load.atlas('battleUI', 'battleUI.png', 'battleUI.json');
+        game.load.image('enterButton', 'enter.png');
+        game.load.image('tutorialtextbox', 'tutorialtextbox.png');
 },
 	create: function()
 	{

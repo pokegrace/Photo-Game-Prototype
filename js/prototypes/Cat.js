@@ -1,5 +1,5 @@
 function Cat(rmood){
-    Phaser.Sprite.call( this, game, game.width / 2, game.height / 2, 'cat');
+    Phaser.Sprite.call( this, game, game.width / 2, game.height / 2, 'catPoses', 'whitecat');
 
     this.anchor.setTo(0.5);
     game.physics.enable(this, Phaser.Physics.ARCADE);

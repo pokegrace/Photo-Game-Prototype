@@ -2,7 +2,7 @@ function OverWorldCat(x, y){
     Phaser.Sprite.call( this, game, x , y, 'cat');
 
     this.anchor.setTo(0.5);
-    this.scale.setTo(0.25);
+    this.scale.setTo(0.2);
     game.physics.enable(this, Phaser.Physics.ARCADE);
 
 
@@ -121,7 +121,7 @@ OverWorldCat.prototype.drawConeAroundWalls = function(ray) {
     if (distanceToPlayer < distanceToWall)
     {
         console.log(cat, player);
-        game.state.start('battle');
+        game.state.start('battleTutorial');
         game.sound.play('catDetects');
     }
     return (closestIntersection) ? closestIntersection: point;

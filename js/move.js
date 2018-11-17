@@ -51,7 +51,9 @@ move.prototype = {
         // target cat
         cat = new OverWorldCat(800, 50);
 
-
+	treat1 = new Treat(150, 450);
+	treat2 = new Treat(450, 1200);
+	treat3 = new Treat(1200, 50);
 
 
     },
@@ -75,6 +77,9 @@ move.prototype = {
         {
             catFlees(cat, player);
         }
+	game.physics.arcade.collide(player, treat1, pickup, null, this);
+	game.physics.arcade.collide(player, treat2, pickup, null, this);
+	game.physics.arcade.collide(player, treat3, pickup, null, this);
     },
 };
 
@@ -88,3 +93,8 @@ function catFlees (cat, player) {
      cat.body.velocity.y = 4 * player.body.velocity.y;
 }
 function reportCollision(x,y){console.log("",x,y)}
+
+function pickup(player, treat){
+   treat.kill();
+   treats++;
+}

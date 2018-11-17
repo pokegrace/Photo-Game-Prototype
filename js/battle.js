@@ -21,6 +21,8 @@ var catNeutralText = ['They stare at you questioningly.', 'The cat doesn\'t appe
 var catUnhappyText = ['They look ready to bolt any minute.', 'They look highly annoyed at you.', 'You\'re slightly afraid this cat may come up and claw you.',
 						'You can clearly tell this cat is unhappy.'];
 var catRunText = ['Cat has run away!', 'Cat was bored and left.', 'You scared the cat away!'];
+var catPoseText = ['The cat lazily changes positions.', 'The cat contently changes poses.', 'The cat yawns and changes poses.',  
+					'The cat moves into a new pose while looking annoyed at you.'];
 
 battle.prototype = {
 	preload: function() 
@@ -67,11 +69,18 @@ battle.prototype = {
 		battleTextBox = game.add.sprite(500, 530, 'battleUI', 'battletextbox');
 		battleTextBox.anchor.setTo(0.5);
 
-		moodBar = game.add.sprite(125, 15, 'battleUI', 'goodmood');
+		moodHead = game.add.sprite(125, 15, 'battleUI', 'moodHead');
+		moodBar = game.add.sprite(175, 33, 'battleUI', 'moodBar');
+		moodOutline = game.add.sprite(125, 15, 'battleUI', 'moodOutline');
+
+		treatCounter = game.add.sprite(750, 50, 'battleUI', 'treat');
+		treatCounter.anchor.setTo(0.5);
 
 		// randomly assign a mood to cat from (70 - 100)
 		rmood = randomRate(7, 11);
 		rmood *= 10;	
+
+		setMoodBar(rmood);
 
 		// adding cat object 
 		cat = new Cat(rmood);
@@ -85,22 +94,23 @@ battle.prototype = {
 			catScale = (maxDistance - distance) / maxDistance;
 		cat.scale.setTo(catScale);
 
-		// telling player whose turn it is
-		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
-
+		
 		// creating action text to describe to player
-		style1 = {font: '20px Arial', fill: '#000000', align: 'center'};
+		style1 = {font: '20px Arial', fill: '#000000', align: 'center', wordWrap: true, wordWrapWidth: 350};
 		actionText = game.add.text(0, 0, 'Wait and watch.', style1);
 		actionText.anchor.setTo(0.5);
 		battleTextBox.addChild(actionText);
 
+		style2 = {font: '28px Arial', fill: '#ffffff', align: 'center'};
 		distanceText = game.add.text(500, 600, 'Distance: 75 ft. away', style2);
         distanceText.setText('Distance: ' + distance + ' ft. away');
 		distanceText.anchor.setTo(0.5);
 
 		moodText = game.add.text(110, 60, cat.mood + ' / 100', style2);
 		moodText.anchor.setTo(0.5);
-		moodBar.addChild(moodText);
+		moodOutline.addChild(moodText);
+
+		treatCounterText = game.add.text(800, 30, treats, {font: '32px Arial', fill: '#ffffff', align: 'center'});
 
 		// adding keys to control button highlights
 		ENTERkey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -123,42 +133,42 @@ battle.prototype = {
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
-			waitButton.frame = 9;
-			treatButton.frame = 7;
+			waitButton.frame = 12;
+			treatButton.frame = 10;
 		}
 		else if(choice == 1 && downkey.justPressed())
 		{
 			choice = 2;
 			actionText.setText('Approach.');
-			treatButton.frame = 8;
-			approachButton.frame = 12;
+			treatButton.frame = 11;
+			approachButton.frame = 15;
 		}
 		else if(choice == 1 && upkey.justPressed())
 		{
 			choice = 0;
 			actionText.setText('Wait and watch.');
-			treatButton.frame = 8;
-			waitButton.frame = 10;
+			treatButton.frame = 11;
+			waitButton.frame = 13;
 		}
 		else if(choice == 2 && upkey.justPressed())
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
-			approachButton.frame = 13;
-			treatButton.frame = 7;
+			approachButton.frame = 0;
+			treatButton.frame = 10;
 		}
 		else if(choice == 4 && leftkey.justPressed())
 		{
 			choice = 1;
 			actionText.setText('Give a treat.');
 			photoButton.scale.setTo(1);
-			treatButton.frame = 7;
+			treatButton.frame = 10;
 		}
 		else if(choice == 1 && rightkey.justPressed())
 		{
 			choice = 4;
 			actionText.setText('Take a photo.');
-			treatButton.frame = 8;
+			treatButton.frame = 11;
 			photoButton.scale.setTo(1.2);
 		}
 
@@ -202,14 +212,16 @@ battle.prototype = {
 					cat.mood -= randomRate(1, 9);
 				else if(cat.mood <= 0)
 					cat.mood = 0;
+
 				// setting the text
 				moodText.setText(cat.mood + ' / 100');
+				setMoodBar(cat.mood);
 
 				// if the approach is successful, change the distance
 				if(cat.approachSuccessRate > roll)
 				{
 					// approach a random distance each time
-					var distRoll = randomRate(20, 80);
+					var distRoll = randomRate(20, 60);
 					// randomly generate a text to appear in box
 					var r = randomRate(0, 3);
 					// change stats
@@ -235,7 +247,6 @@ battle.prototype = {
 				{
 					// randomly generate a text to appear in box
 					var r = randomRate(0, 2);
-					moodText.setText(cat.mood + ' / 100');
 					actionText.setText(approachFailText[r]);
 				}
 				disableKeys();
@@ -249,7 +260,7 @@ battle.prototype = {
 				game.time.events.add(2000, function() {setTurn('cat');}, this);
             }
 //--------------------------------- GIVE TREAT ----------------------------------------------------------
-			if(choice == 1 && ENTERkey.justPressed())
+			if(choice == 1 && ENTERkey.justPressed() && treats > 0)
 			{
 				var roll = randomRate(1, 101);
 				console.log('treat roll: ' + roll);
@@ -257,12 +268,17 @@ battle.prototype = {
 
 				if(cat.treatSuccessRate > roll)
 				{
+					treats--;
+					treatCounterText.setText(treats);
 					// randomly generate a text to appear in box
 					var r = randomRate(0, 3);
 					actionText.setText(treatSuccessText[r]);
-					// giving a treat will always give you +50 ft.
+
+					// giving a treat will always give you +40 ft.
 					distance -= 40;
 					distanceText.setText('Distance: ' + distance + ' ft. away');
+
+					// setting scale according to distance
 					if(distance >= 200)
 						catScale = 0.2;
 					else
@@ -272,6 +288,7 @@ battle.prototype = {
 					// change mood
 					cat.mood += randomRate(10, 25);
 					moodText.setText(cat.mood + ' / 100');
+					setMoodBar(cat.mood);
 				}
 				else
 				{
@@ -291,9 +308,14 @@ battle.prototype = {
 				{
 					cat.mood = 100;
 					moodText.setText(cat.mood + ' / 100');
+					setMoodBar(cat.mood);
 				}
 				disableKeys();
 				game.time.events.add(2000, function() {setTurn('cat');}, this);
+			}
+			else if(choice == 1 && ENTERkey.justPressed() && treats <= 0)
+			{
+				actionText.setText('You have no treats!');
 			}
 //--------------------------------- TAKE PHOTO ----------------------------------------------------------
 			if(choice == 4 && ENTERkey.justPressed())
@@ -314,28 +336,72 @@ battle.prototype = {
 			setTurn('cat');
 
 			var runChance = Math.log(cat.mood) * 20 + 8;
-			var roll = randomRate(1, 101);
+			var roll = randomRate(1, 101);	// for run chance
+			var rPose = randomRate(1, 12);	// for random pose chance
+			var rFrame = randomRate (1, 11);
 
 			// if runChance > roll then cat stays
 			if(runChance > roll)
 			{
 				if(cat.mood >= 67 && cat.mood <= 100)
 				{
-					// randomly generate a text to appear in box
-					var r = randomRate(0, 2);
-					actionText.setText(catHappyText[r]);
+					// if randomly generated number is less than 6, the cat doesn't change poses.
+					if(rPose <= 6)
+					{
+						// randomly generate a text to appear in box
+						var r = randomRate(0, 2);
+						actionText.setText(catHappyText[r]);
+					}
+					else if(rPose > 6 && rPose <= 9)
+					{
+						actionText.setText(catPoseText[0]);
+						changePose(cat.frame);
+					}
+					else if(rPose > 9)
+					{
+						actionText.setText(catPoseText[1]);
+						changePose(cat.frame);
+					}
 				}
 				else if(cat.mood >= 34 && cat.mood < 67)
 				{
-					// randomly generate a text to appear in box
-					var r = randomRate(0, 2);
-					actionText.setText(catNeutralText[r]);
+					// if randomly generated number is less than 6, the cat doesn't change poses.
+					if(rPose <= 6)
+					{
+						// randomly generate a text to appear in box
+						var r = randomRate(0, 2);
+						actionText.setText(catNeutralText[r]);
+					}
+					else if(rPose > 6 && rPose <= 9)
+					{
+						actionText.setText(catPoseText[0]);
+						changePose(cat.frame);
+					}
+					else if(rPose > 9)
+					{
+						actionText.setText(catPoseText[2]);
+						changePose(cat.frame);
+					}
 				}
 				else if(cat.mood >= 0 && cat.mood < 34)
 				{
-					// randomly generate a text to appear in box
-					var r = randomRate(0, 4);
-					actionText.setText(catUnhappyText[r]);
+					// if randomly generated number is less than 6, the cat doesn't change poses.
+					if(rPose <= 6)
+					{
+						// randomly generate a text to appear in box
+						var r = randomRate(0, 2);
+						actionText.setText(catUnhappyText[r]);
+					}
+					else if(rPose > 6 && rPose <= 9)
+					{
+						actionText.setText(catPoseText[0]);
+						changePose(cat.frame);
+					}
+					else if(rPose > 9)
+					{
+						actionText.setText(catPoseText[3]);
+						changePose(cat.frame);
+					}
 				}
 			}
 			else
@@ -384,7 +450,7 @@ function setTurn(turn)
 	{
 		playerTurn = true;
 		choice = 0;
-		waitButton.frame = 10;
+		waitButton.frame = 13;
 		actionText.setText('Wait and watch.');
 		catTurn.visible = false;
 		yourTurn.visible = true;
@@ -394,9 +460,70 @@ function setTurn(turn)
 		playerTurn = false;
 		catTurn.visible = true;
 		yourTurn.visible = false;
-		waitButton.frame = 9;
-		treatButton.frame = 8;
-		approachButton.frame = 13;
+		waitButton.frame = 12;
+		treatButton.frame = 11;
+		approachButton.frame = 0;
 		photoButton.scale.setTo(1);
+	}
+}
+
+function setMoodBar(mood)
+{
+	// tinting mood bar
+	if(mood >= 80 && mood <= 100)
+	{
+		moodBar.scale.setTo(1);
+		moodBar.tint = 0x228B22;
+		moodHead.tint = 0x228B22;
+	}
+	else if(mood >= 60 && mood < 80)
+	{
+		moodBar.scale.setTo(0.7, 1);
+		moodBar.tint = 0xADFF2F;
+		moodHead.tint = 0xADFF2F;
+	}
+	else if(mood >= 40 && mood < 60)
+	{
+		moodBar.scale.setTo(0.5, 1);
+		moodBar.tint = 0xFFFF66;
+		moodHead.tint = 0xFFFF66;
+	}
+	else if(mood >= 20 && mood < 40)
+	{
+		moodBar.scale.setTo(0.3, 1);
+		moodBar.tint = 0xFFA500;
+		moodHead.tint = 0xFFA500;
+	}
+	else if(mood >= 10 && mood < 20)
+	{
+		moodBar.scale.setTo(0.3, 1);
+		moodBar.tint = 0xFF0000;
+		moodHead.tint = 0xFF0000;
+	}
+}
+
+function changePose(frame)
+{
+	var r = randomRate(1, 11);
+	if(frame == 0)
+	{
+		if(r <= 5)
+			cat.frame = 1;
+		else if(r > 5)
+			cat.frame = 2;
+	}
+	else if(frame == 1)
+	{
+		if(r <= 5)
+			cat.frame = 0;
+		else if(r > 5)
+			cat.frame = 2;
+	}
+	else if(frame == 2)
+	{
+		if(r <= 5)
+			cat.frame = 0;
+		else if(r > 5)
+			cat.frame = 1;
 	}
 }
