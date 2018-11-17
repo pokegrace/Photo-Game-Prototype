@@ -1,8 +1,8 @@
 function Player(x, y)
 {
-    Phaser.Sprite.call( this, game, x, y, 'char')
+    Phaser.Sprite.call( this, game, x, y, 'cat')
     this.anchor.setTo(0.5);
-    this.scale.setTo(2);
+    this.scale.setTo(0.25);
     game.physics.enable(this, Phaser.Physics.ARCADE)
     
     game.add.existing(this);
@@ -44,11 +44,9 @@ Player.prototype.update = function()
     if (arrows.up.isDown && arrows.down.isUp)
         {
             player.body.velocity.y-=accelleration;
-            player.frame = 8
         }
     else if (arrows.down.isDown && arrows.up.isUp)
         {
-            player.frame = 0
             player.body.velocity.y+=accelleration;
         }
     else
@@ -63,12 +61,10 @@ Player.prototype.update = function()
     if (arrows.right.isDown && arrows.left.isUp)
         {
             player.body.velocity.x+=accelleration;
-            player.frame = 24
         }
     else if (arrows.left.isDown && arrows.right.isUp)
         {
             player.body.velocity.x-=accelleration;
-            player.frame = 16
         }
     else
         {
