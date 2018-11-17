@@ -72,6 +72,9 @@ battle.prototype = {
 		moodBar = game.add.sprite(175, 33, 'battleUI', 'moodBar');
 		moodOutline = game.add.sprite(125, 15, 'battleUI', 'moodOutline');
 
+		treatCounter = game.add.sprite(750, 50, 'battleUI', 'treat');
+		treatCounter.anchor.setTo(0.5);
+
 		// randomly assign a mood to cat from (70 - 100)
 		rmood = randomRate(7, 11);
 		rmood *= 10;	
@@ -106,6 +109,8 @@ battle.prototype = {
 		moodText.anchor.setTo(0.5);
 		moodOutline.addChild(moodText);
 
+		treatCounterText = game.add.text(800, 30, treats, {font: '32px Arial', fill: '#ffffff', align: 'center'});
+
 		// adding keys to control button highlights
 		ENTERkey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 		upkey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
@@ -126,7 +131,7 @@ battle.prototype = {
 		if(choice == 0 && downkey.justPressed())
 		{
 			choice = 1;
-			actionText.setText('Give a treat. You have: ' + treats + ' treats.');
+			actionText.setText('Give a treat.');
 			waitButton.frame = 12;
 			treatButton.frame = 10;
 		}
@@ -147,14 +152,14 @@ battle.prototype = {
 		else if(choice == 2 && upkey.justPressed())
 		{
 			choice = 1;
-			actionText.setText('Give a treat. You have: ' + treats + ' treats.');
+			actionText.setText('Give a treat.');
 			approachButton.frame = 0;
 			treatButton.frame = 10;
 		}
 		else if(choice == 4 && leftkey.justPressed())
 		{
 			choice = 1;
-			actionText.setText('Give a treat. You have: ' + treats + ' treats.');
+			actionText.setText('Give a treat.');
 			photoButton.scale.setTo(1);
 			treatButton.frame = 10;
 		}
@@ -263,6 +268,7 @@ battle.prototype = {
 				if(cat.treatSuccessRate > roll)
 				{
 					treats--;
+					treatCounterText.setText(treats);
 					// randomly generate a text to appear in box
 					var r = randomRate(0, 3);
 					actionText.setText(treatSuccessText[r]);
