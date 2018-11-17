@@ -21,7 +21,8 @@ catstagram.prototype = {
         var catDistanceScore = 100* (game.startDistance - game.photoDistance)/game.startDistance;
         var photoQuality =( catDistanceScore + game.catMood )/2;
 
-        this.numberOfLikes = Math.ceil(Math.log(photoQuality)*Math.pow(photoQuality*0.1, 5.5)/100)
+        this.numberOfLikes = Math.ceil(Math.log(photoQuality)
+                                                *Math.pow(photoQuality*0.1, Math.min(photoQuality*0.1, 5.5)))
 
         console.log(this.numberOfLikes);
         this.likeStyle = {font: "20px Comic Sans MS", fill: 'red', align: 'left', wordWrapWidth: 300, wordWrap: true};
@@ -84,7 +85,16 @@ catstagram.prototype = {
                  if (displayedLikes < numberOfLikes)
                     {
                         displayedLikes++;
-                        //console.log(displayedLikes)
+                        if (displayedLikes < numberOfLikes-100)
+                            displayedLikes += 10;
+                        if (displayedLikes < numberOfLikes-1000)
+                            displayedLikes += 100;
+                        if (displayedLikes < numberOfLikes-10000)
+                            displayedLikes += 1000;
+                        if (displayedLikes < numberOfLikes-100000)
+                            displayedLikes += 10000;
+
+                        console.log(displayedLikes, numberOfLikes)
                         likeText.setText(displayedLikes)
                     }
                     else
