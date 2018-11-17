@@ -309,8 +309,6 @@ battle.prototype = {
 			else if(choice == 1 && ENTERkey.justPressed() && treats <= 0)
 			{
 				actionText.setText('You have no treats!');
-				disableKeys();
-				game.time.events.add(2000, function() {setTurn('cat');}, this);
 			}
 //--------------------------------- TAKE PHOTO ----------------------------------------------------------
 			if(choice == 4 && ENTERkey.justPressed())

@@ -47,7 +47,7 @@ battleTutorial.prototype = {
 
 		setMoodBar(rmood);
 
-		tutorialCat = game.add.sprite(game.width / 2, game.height / 2, 'cat');
+		tutorialCat = game.add.sprite(game.width / 2, game.height / 2, 'catPoses', 'whitecat');
 		tutorialCat.anchor.setTo(0.5);
 		tutorialCat.scale.setTo(0.5);
 		
