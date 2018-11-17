@@ -7,8 +7,8 @@ var move = function(game)
     catFlee = false;
 
     points = {
-	'x':[800,1190,1190,1050,1050,1150,1160,1100,950,850,550,550,670,670,630,550,550,700,800],
-	'y':[100,200,350,450,650,680,1000,1200,1200,1200,900,700,650,500,470,450,200,150,100]
+	'x':[800,1000,1190,1190,1050,1050,1150,1160,1100,950,850,750,550,550,670,670,650,550,550,700,800],
+	'y':[100,120,200,350,450,650,680,1000,1200,1200,1200,1100,900,700,650,500,450,430,200,150,100]
     };
 
     pi = 0;
@@ -135,13 +135,13 @@ function pickup(player, treat){
 function plot(){
 	path = [];
 
-	var t = 1/3000;
+	var t = 1/6000;
 	for(var i=0;i<1;i+=t){
 	 var px = game.math.linearInterpolation(points.x, i);
          var py = game.math.linearInterpolation(points.y, i);
 	 var node = { x: px, y: py, angle: 0 };
     	 	node.angle = game.math.angleBetweenPoints(cat, node);
-		if(i > 0.08){node.angle = node.angle+45;}
+		if(i > 0.1){node.angle = node.angle+45;}
 		if(i > 0.2){node.angle = node.angle-45;}
 		if(i > 0.3){node.angle = node.angle+45;}
 		if(i > 0.4){node.angle = node.angle+45;}

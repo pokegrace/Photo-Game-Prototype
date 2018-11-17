@@ -25,8 +25,8 @@ Player.prototype.update = function()
     // check if the player is sneaking
     var control = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
     this.crawling = control.isDown;
-    var accelleration = (this.crawling) ? 5 : 50; //10
-    var topSpeed = (this.crawling) ? 40 : 200; //80
+    var accelleration = (this.crawling) ? 5 : 20; //20
+    var topSpeed = (this.crawling) ? 40 : 100; //100
 
     //tint the character darker if sneaking
     if (this.crawling)
