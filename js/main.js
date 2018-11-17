@@ -59,22 +59,52 @@ Load.prototype = {
         game.load.image('obstacles', 'CatographerObstacles.png');
 
 
-        // loading audio
+        // loading placeholder audio
         game.load.path = './assets/sounds/placeholders/'
-        game.load.audio('catAngry', ['catAngry.mp3','catAngry.ogg']);
-        game.load.audio('catDetects', ['catDetects.mp3','catDetects.ogg']);
-        game.load.audio('catHappy', ['catHappy.mp3','catHappy.ogg']);
-        game.load.audio('gameStart', ['gameStart.mp3','gameStart.ogg']);
-        game.load.audio('menuSwitch', ['menuSwitch.mp3','menuSwitch.ogg']);
         game.load.audio('scoringPage', ['scoringPage.mp3','scoringPage.ogg']);
-        game.load.audio('shutterNoise', ['shutterNoise.mp3','shutterNoise.ogg']);
-        game.load.audio('step', ['step.mp3','step.ogg']);
+
+        // final audio
+        game.load.path = './assets/sounds/SFX/'
+        game.load.audio('step', ['Footsteps.mp3','Footsteps.ogg']);
+        game.load.audio('shutterNoise', ['CameraClick.mp3','CameraClick.ogg']);
+        game.load.audio('catDetects', ['Meow2.mp3','Meow2.ogg']);
+        game.load.audio('catTakesTurn', ['Meow1.mp3','Meow1.ogg']);
+        game.load.audio('menuSwitch', ['UISwitch.mp3','UISwitch.ogg']);
+        game.load.audio('menuClick', ['UIClick.mp3','UIClick.ogg']);
+        game.load.audio('gameStart', ['UIClick.mp3','UIClick.ogg']);
+
+        // music
+        game.load.path = './assets/sounds/Music/'
+        game.load.audio('Instagram', ['InstagramMusic.mp3','InstagramMusic.ogg']);
+        game.load.audio('Battle', ['BattleMusic.mp3','BattleMusic.ogg']);
+        game.load.audio('Overworld', ['OverworldMusic.mp3','OverworldMusic.ogg']);
+
+
+        game.music = [];
 
         game.load.path = './assets/UI/';
         game.load.atlas('battleUI', 'battleUI.png', 'battleUI.json');
 },
 	create: function()
 	{
-		game.state.start('play');
+        game.music.push(game.add.audio('Instagram'));
+        game.music.push(game.add.audio('Overworld'));
+        game.music.push(game.add.audio('Battle'));
 	},
+    update: function(){
+		game.music[0].loop = true
+		game.music[1].loop = true
+		game.music[2].loop = true
+        if(
+            ! game.music[0].isDecoding &&
+            ! game.music[1].isDecoding &&
+            ! game.music[2].isDecoding
+        )
+		{
+            game.music[0].volume = 0.2
+		    game.music[1].volume = 0.2
+		    game.music[2].volume = 0.2
+            game.state.start('play');
+        }
+    }
 };

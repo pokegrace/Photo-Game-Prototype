@@ -28,7 +28,9 @@ play.prototype = {
 		battleKey = game.input.keyboard.addKey(Phaser.Keyboard.B);
 		moveKey = game.input.keyboard.addKey(Phaser.Keyboard.M);
 
-
+        game.music[0].play()
+        game.music[1].stop()
+        game.music[2].stop()
 },
 	update: function() 
 	{

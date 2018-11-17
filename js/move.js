@@ -53,6 +53,12 @@ move.prototype = {
 
 
 
+		// static variable to make cat run chance happen once
+		counter = 0;
+        game.music[0].stop()
+        game.music[1].play()
+        game.music[2].stop()
+
 
     },
 	update: function() 

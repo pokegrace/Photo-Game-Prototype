@@ -51,6 +51,10 @@ catstagram.prototype = {
             'CH':4,
         }
 
+        game.music[0].play()
+        game.music[1].stop()
+        game.music[2].stop()
+
     },
 	update: function() 
 	{
@@ -79,6 +83,7 @@ catstagram.prototype = {
                 var numberOfLikes = this.numberOfLikes
                 var likeText = this.likeText;
                 var displayedLikes = this.displayedLikes;
+                returnTriggered = false;
                 cal = setInterval(function()
                 {
                  
@@ -101,7 +106,11 @@ catstagram.prototype = {
                     {
                         setTimeout(function()
                         {
-                            game.state.start('play');
+                            if (!returnTriggered)
+                            {
+                                returnTriggered = true
+                                game.state.start('play');
+                            }
                         }, 10000);
                         window.clearInterval(cal);
                     }
