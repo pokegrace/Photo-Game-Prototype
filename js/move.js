@@ -58,6 +58,7 @@ move.prototype = {
 	update: function() 
 	{
         game.catDistance = Math.floor(Phaser.Math.distance(player.x, player.y, cat.x, cat.y));
+        //console.log('distance: ' + game.catDistance);
 
         // check player collision agains obstacle layer
         game.physics.arcade.collide(player, overWorldWalls, reportCollision, null, this);
