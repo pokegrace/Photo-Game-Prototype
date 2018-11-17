@@ -4,6 +4,17 @@ var move = function(game)
 
     game.catDistance = 100;
     game.playerIsSneaking = false;
+    catFlee = false;
+
+    points = {
+	'x':[800,1000,1190,1190,1050,1050,1150,1160,1100,950,850,750,550,550,670,670,650,550,550,700,800],
+	'y':[100,120,200,350,450,650,680,1000,1200,1200,1200,1100,900,700,650,500,450,430,200,150,100]
+    };
+
+    pi = 0;
+    ix = 1;
+    path = [];
+    timer = 0;
 }
 
 
@@ -49,18 +60,19 @@ move.prototype = {
         //game.camera.setSize(100,100);
 
         // target cat
-        cat = new OverWorldCat(800, 50);
+        cat = new OverWorldCat(800, 100);
 
 	treat1 = new Treat(150, 450);
 	treat2 = new Treat(450, 1200);
 	treat3 = new Treat(1200, 50);
 
-
+	plot();
     },
 	update: function() 
 	{
         game.catDistance = Math.floor(Phaser.Math.distance(player.x, player.y, cat.x, cat.y));
         //console.log('distance: ' + game.catDistance);
+        console.log('' + catFlee);
 
         // check player collision agains obstacle layer
         game.physics.arcade.collide(player, overWorldWalls, reportCollision, null, this);
@@ -75,11 +87,25 @@ move.prototype = {
         if (Phaser.Math.distance(cat.x, cat.y, player.x, player.y) < 100 &&
             !player.crawling)
         {
-            catFlees(cat, player);
+	     catFlee = true;
+	     timer = 100;
         }
+	if(timer != 0){	timer--;}
+	if(timer == 0){catFlee = false;}
 	game.physics.arcade.collide(player, treat1, pickup, null, this);
 	game.physics.arcade.collide(player, treat2, pickup, null, this);
 	game.physics.arcade.collide(player, treat3, pickup, null, this);
+
+	 cat.x = path[pi].x;
+	 cat.y = path[pi].y;
+	 cat.rotation = path[pi].angle;
+	 pi++;
+	 if(catFlee == true){pi=pi+3;}
+	 if (pi >= path.length)
+            {
+		pi = 0;
+            }
+	
     },
 };
 
@@ -88,13 +114,30 @@ function catIsCaught (cat, player){
     game.state.start('battle');
 }
 
-function catFlees (cat, player) {
-     cat.body.velocity.x = 4 * player.body.velocity.x;
-     cat.body.velocity.y = 4 * player.body.velocity.y;
-}
 function reportCollision(x,y){console.log("",x,y)}
 
 function pickup(player, treat){
    treat.kill();
    treats++;
+}
+function plot(){
+	path = [];
+
+	var t = 1/6000;
+	for(var i=0;i<1;i+=t){
+	 var px = game.math.linearInterpolation(points.x, i);
+         var py = game.math.linearInterpolation(points.y, i);
+	 var node = { x: px, y: py, angle: 0 };
+    	 	node.angle = game.math.angleBetweenPoints(cat, node);
+		if(i > 0.1){node.angle = node.angle+45;}
+		if(i > 0.2){node.angle = node.angle-45;}
+		if(i > 0.3){node.angle = node.angle+45;}
+		if(i > 0.4){node.angle = node.angle+45;}
+		if(i > 0.5){node.angle = node.angle+45;}
+		if(i > 0.7){node.angle = node.angle-45;}
+		if(i > 0.9){node.angle = node.angle+45;}
+	 path.push(node);
+	 ix++;
+	}
+
 }
