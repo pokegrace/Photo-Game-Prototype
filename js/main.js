@@ -34,7 +34,7 @@ Load.prototype = {
         game.load.tilemap('tile_maps', 'CatographerMap.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('tiles', 'CatographerTiles.png');
         game.load.image('obstacles', 'CatographerObstacles.png');
-
+        game.load.atlas('catPoses', 'catPoses.png', 'catPoses.json');
 
         // loading audio
         game.load.path = './assets/sounds/placeholders/'

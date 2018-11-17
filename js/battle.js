@@ -330,28 +330,52 @@ battle.prototype = {
 
 			var runChance = Math.log(cat.mood) * 20 + 8;
 			var roll = randomRate(1, 101);	// for run chance
-			var roll2 = randomRate(1, 101);	// for change pose chance
+			var rPose = randomRate(1, 12);	// for random pose chance
 
 			// if runChance > roll then cat stays
 			if(runChance > roll)
 			{
 				if(cat.mood >= 67 && cat.mood <= 100)
 				{
-					// randomly generate a text to appear in box
-					var r = randomRate(0, 2);
-					actionText.setText(catHappyText[r]);
+					// if randomly generated number is less than 6, the cat doesn't change poses.
+					if(rPose <= 6)
+					{
+						// randomly generate a text to appear in box
+						var r = randomRate(0, 2);
+						actionText.setText(catHappyText[r]);
+					}
+					else if(rPose > 6 && rPose <= 9)
+						actionText.setText(catPoseText[0]);
+					else if(rPose > 9)
+						actionText.setText(catPoseText[1]);
 				}
 				else if(cat.mood >= 34 && cat.mood < 67)
 				{
-					// randomly generate a text to appear in box
-					var r = randomRate(0, 2);
-					actionText.setText(catNeutralText[r]);
+					// if randomly generated number is less than 6, the cat doesn't change poses.
+					if(rPose <= 6)
+					{
+						// randomly generate a text to appear in box
+						var r = randomRate(0, 2);
+						actionText.setText(catNeutralText[r]);
+					}
+					else if(rPose > 6 && rPose <= 9)
+						actionText.setText(catPoseText[0]);
+					else if(rPose > 9)
+						actionText.setText(catPoseText[2]);
 				}
 				else if(cat.mood >= 0 && cat.mood < 34)
 				{
-					// randomly generate a text to appear in box
-					var r = randomRate(0, 4);
-					actionText.setText(catUnhappyText[r]);
+					// if randomly generated number is less than 6, the cat doesn't change poses.
+					if(rPose <= 6)
+					{
+						// randomly generate a text to appear in box
+						var r = randomRate(0, 2);
+						actionText.setText(catUnhappyText[r]);
+					}
+					else if(rPose > 6 && rPose <= 9)
+						actionText.setText(catPoseText[0]);
+					else if(rPose > 9)
+						actionText.setText(catPoseText[3]);
 				}
 			}
 			else
@@ -360,32 +384,6 @@ battle.prototype = {
 				var r = randomRate(0, 3);
 				actionText.setText(catRunText[r]);
 				game.time.events.add(2000, function() {enableKeys(); game.state.start('play');}, this);
-			}
-			// if second roll >= 50, cat changes poses
-			if(roll2 >= 50)
-			{
-				var r = randomRate(1, 11);
-				if(cat.mood >= 67 && cat.mood <= 100)
-				{
-					if(r <= 5)
-						actionText.setText(catPoseText[0]);
-					else if(r > 5)
-						actionText.setText(catPoseText[1]);
-				}
-				else if(cat.mood >= 34 && cat.mood < 67)
-				{
-					if(r <= 5)
-						actionText.setText(catPoseText[0]);
-					else if(r > 5)
-						actionText.setText(catPoseText[2]);
-				}
-				else if(cat.mood >= 0 && cat.mood < 34)
-				{
-					if(r <= 5)
-						actionText.setText(catPoseText[0]);
-					else if(r > 5)
-						actionText.setText(catPoseText[3]);
-				}
 			}
 			counter++;
 
