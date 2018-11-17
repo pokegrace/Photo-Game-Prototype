@@ -71,7 +71,7 @@ move.prototype = {
 	update: function() 
 	{
         game.catDistance = Math.floor(Phaser.Math.distance(player.x, player.y, cat.x, cat.y));
-        console.log('distance: ' + game.catDistance);
+        console.log('' + catFlee);
 
         // check player collision agains obstacle layer
         game.physics.arcade.collide(player, overWorldWalls, reportCollision, null, this);
@@ -83,41 +83,27 @@ move.prototype = {
         }
 
 
-        if (Phaser.Math.distance(cat.x, cat.y, player.x, player.y) < 50 &&
+        if (Phaser.Math.distance(cat.x, cat.y, player.x, player.y) < 100 &&
             !player.crawling)
         {
-            if(timer <= 0){
-	     if(catFlee == true){ catFlee = false;}
-	     else{catFlee = true;}
-	     timer = 50;
- 	    }
+	     catFlee = true;
+	     timer = 100;
         }
-	if(timer != 0){
-		timer--;
-	}
+	if(timer != 0){	timer--;}
+	if(timer == 0){catFlee = false;}
 	game.physics.arcade.collide(player, treat1, pickup, null, this);
 	game.physics.arcade.collide(player, treat2, pickup, null, this);
 	game.physics.arcade.collide(player, treat3, pickup, null, this);
 
-	if( catFlee == true){
-	 cat.x = path[pi].x;
-	 cat.y = path[pi].y;
-	 cat.rotation = path[pi].angle+180;
-	 pi--;
-	 if (pi < 0)
-            {
-		pi = path.length-1;
-            }
-	}else{
 	 cat.x = path[pi].x;
 	 cat.y = path[pi].y;
 	 cat.rotation = path[pi].angle;
 	 pi++;
+	 if(catFlee == true){pi=pi+3;}
 	 if (pi >= path.length)
             {
 		pi = 0;
             }
-	}
 	
     },
 };
