@@ -15,6 +15,10 @@ div
     margin: auto;
 }
 
+#game
+{
+    border: 2px solid black;
+}
 
 p
 {

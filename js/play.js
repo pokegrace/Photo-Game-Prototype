@@ -13,20 +13,13 @@ play.prototype = {
 	{
 		// create
 		style = { font: "55px Arial", fill: "#ffffff", align: "center" };
-		title = game.add.text(game.width / 2, 50, 'Play!', style);
-		title.anchor.setTo(0.5);
+		title = game.add.image(0, 0, 'title');
 		
-//		text = game.add.text(game.width / 4, 550, 'Press B to battle!', style);
-//		text.anchor.setTo(0.5);
 
-        text = game.add.text(game.width*3 / 4, 550, 'Press M to move!', style);
-		text.anchor.setTo(0.5);
 
-		cat = game.add.sprite(game.width / 2, game.height / 2, 'cat');
-		cat.anchor.setTo(0.5);
 
 		battleKey = game.input.keyboard.addKey(Phaser.Keyboard.B);
-		moveKey = game.input.keyboard.addKey(Phaser.Keyboard.M);
+		moveKey = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 		tutorialKey = game.input.keyboard.addKey(Phaser.Keyboard.T);
 
         game.music[0].play()
