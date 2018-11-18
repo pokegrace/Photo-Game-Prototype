@@ -111,7 +111,7 @@ move.prototype = {
 
 function catIsCaught (cat, player){
     console.log(cat, player);
-    game.state.start('battle');
+    game.state.start('battleTutorial');
 }
 
 function reportCollision(x,y){console.log("",x,y)}
