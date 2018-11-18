@@ -65,6 +65,12 @@ move.prototype = {
 	treat1 = new Treat(150, 450);
 	treat2 = new Treat(450, 1200);
 	treat3 = new Treat(1200, 50);
+		// static variable to make cat run chance happen once
+		counter = 0;
+        game.music[0].stop()
+        game.music[1].play()
+        game.music[2].stop()
+
 
 	plot();
     },

@@ -29,7 +29,9 @@ play.prototype = {
 		moveKey = game.input.keyboard.addKey(Phaser.Keyboard.M);
 		tutorialKey = game.input.keyboard.addKey(Phaser.Keyboard.T);
 
-
+        game.music[0].play()
+        game.music[1].stop()
+        game.music[2].stop()
 },
 	update: function() 
 	{

@@ -43,7 +43,7 @@
          "name":"Collisions",
          "objects":[
                 {
-                 "height":698.331527197375,
+                 "height":732,
                  "id":13,
                  "name":"Building",
                  "rotation":0,
@@ -87,7 +87,7 @@
                  "y":419.234159618373
                 }, 
                 {
-                 "height":698.332,
+                 "height":732,
                  "id":25,
                  "name":"Building",
                  "rotation":0,

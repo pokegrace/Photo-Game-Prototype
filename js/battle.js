@@ -123,6 +123,9 @@ battle.prototype = {
 
 		// static variable to make cat run chance happen once
 		counter = 0;
+        game.music[0].stop()
+        game.music[1].stop()
+        game.music[2].play()
 	},
 	update: function() 
 	{
@@ -180,7 +183,11 @@ battle.prototype = {
            		game.sound.play('menuSwitch');
         	}
 			//--------------------------------- APPROACH ----------------------------------------------------------
-			if(choice == 2 && ENTERkey.justPressed())
+			if(choice !== 4 && ENTERkey.justPressed())
+			{
+			game.sound.play('menuClick');
+            }
+            if(choice == 2 && ENTERkey.justPressed())
 			{
 				// comparing roll to cat.successRate
 				var roll = randomRate(1, 101);
@@ -457,6 +464,7 @@ function setTurn(turn)
 	}
 	else if(turn == 'cat')
 	{
+        game.playMeow()
 		playerTurn = false;
 		catTurn.visible = true;
 		yourTurn.visible = false;
