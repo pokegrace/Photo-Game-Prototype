@@ -1,5 +1,5 @@
 function OverWorldCat(x, y){
-    Phaser.Sprite.call( this, game, x , y, 'cat');
+    Phaser.Sprite.call( this, game, x , y, 'catPoses', 'whitecat');
 
     this.anchor.setTo(0.5);
     this.scale.setTo(0.2);
