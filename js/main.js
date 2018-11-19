@@ -28,6 +28,7 @@ Load.prototype = {
 		game.load.image('obstacle', 'obstacle.png');
 		game.load.image('phone', 'phone.png');
 		game.load.image('title', '../title.png');
+		game.load.image('player', 'player.png');
 		game.load.spritesheet('char', 'rpg_sprite_walk.png', 24, 32, 36);
 
 
@@ -84,7 +85,7 @@ Load.prototype = {
 
         game.playMeow = function(){
             if (Math.random()>0.5)
-                game.sound.play('catTakesTurn');
+                game.sound.play('catTakesTurn')
             else
                 game.sound.play('catDetects');
         }
