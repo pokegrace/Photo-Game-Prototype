@@ -26,7 +26,7 @@ moveTutorial.prototype = {
         obstacleLayer.resizeWorld();
 
         // player character
-		player = new Player(20, 20, false);
+		player = new Player(610, 1080, false);
 
 
         topLayer = map.createLayer(2)
@@ -36,14 +36,14 @@ moveTutorial.prototype = {
         // target cat
         cat = new OverWorldCat(800, 50);
 
-        this.textBox = game.add.sprite(game.width/2, game.height/2, "battleUI", "battletextbox");
+        this.textBox = game.add.sprite(player.x, player.y-200, "battleUI", "battletextbox");
         this.textBox.anchor.setTo(0.5);
         this.textBox.scale.x = 1.9; this.textBox.scale.y = 3.1;
 		this.style = { font: "20px Arial", fill: "#000000", align: "center" };
-		title = game.add.text(game.width / 2, game.height/2, "Hello and welcome to Catographer!\nHere you’ll sneak up on cats to get the best shot.\nIf you land in the cat’s line of sight, it’ll start the photo battle.\nYou may use the objects you see to hide behind so the cat doesn’t spot you.\nTry to get as close to the cat as possible without the cat running away.\nUse the arrow keys to move and hit shift to move silently towards the cat.\nCollect treats on the map to help later on in the photo battle.", this.style)
+		title = game.add.text(player.x, player.y-200, "Hello and welcome to Catographer!\nHere you’ll sneak up on cats to get the best shot.\nIf you land in the cat’s line of sight, it’ll start the photo battle.\nYou may use the objects you see to hide behind so the cat doesn’t spot you.\nTry to get as close to the cat as possible without the cat running away.\nUse the arrow keys to move and hit shift to move silently towards the cat.\nCollect treats on the map to help later on in the photo battle.", this.style)
         title.anchor.setTo(0.5);
  
-        enterButton = game.add.sprite(game.width/2, 500, 'enterButton');
+        enterButton = game.add.sprite(player.x, player.y-50, 'enterButton');
         enterButton.scale.setTo(0.6);
         enterButton.anchor.setTo(0.5);
 
